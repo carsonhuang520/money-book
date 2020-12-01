@@ -1,0 +1,26 @@
+@import '../constants.scss';
+.header-wrapper {
+  height: 50px;
+  background: #f8f8f8;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f8f8f8;
+
+  .btn {
+    background: #e8e8e9;
+    border-color: #e8e8e9;
+    color: $bgColor;
+    font-weight: 700;
+    box-shadow: none;
+    margin-right: 10px;
+    padding: 3px 35px;
+    &.active {
+      background: $bgColor;
+      border-color: $bgColor;
+      color: #ffffff;
+    }
+  }
+}

@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import './App.css'
+import React, {Component, Fragment} from 'react'
+import Header from './components/Header'
+import Nav from './components/Nav'
+import RecordForm from './components/RecordForm'
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      type: 'outcome'
+    }
+  }
+
+  onClickType = (type) => {
+    this.setState({
+      type: type
+    })
+  }
+
+  render() {
+    const {type} = this.state
+    return (
+      <Fragment>
+        <Header type={type} onClickType={this.onClickType}/>
+        <main className={'main-wrapper'}><RecordForm type={type}/></main>
+        <Nav/>
+      </Fragment>
+    )
+  }
+
+
 }
 
-export default App;
+export default App
