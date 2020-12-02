@@ -1,0 +1,9 @@
+.calendar {
+  width: 250px;
+  &-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px 0;
+  }
+}
