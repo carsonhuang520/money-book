@@ -3,12 +3,22 @@ import React, {Component, Fragment} from 'react'
 import Nav from './components/Nav'
 import CreateAccount from './pages/CreateAccount'
 import AccountList from './pages/AccountList'
+import Report from './pages/Report'
+import {Route, withRouter} from 'react-router-dom'
 
 class App extends Component {
   constructor(props) {
     super(props)
+    const pathname = this.props.history.location.pathname
+    let nav = 'jizhang'
+    if (pathname === '/report') {
+      nav = 'report'
+    } else if (pathname === '/list') {
+      nav = 'detail'
+    }
     this.state = {
-      type: 'outcome'
+      type: 'outcome',
+      navType: nav
     }
   }
 
@@ -19,16 +29,19 @@ class App extends Component {
   }
 
   render() {
-    const {type} = this.state
+    const {type, navType} = this.state
     return (
       <Fragment>
-        <AccountList type={type} onClickType={this.onClickType}/>
-        <Nav/>
+        <Route exact path="/" type={type}
+               render={() => <CreateAccount type={type} onClickType={this.onClickType}/>}/>
+        <Route path="/list" type={type}
+               render={() => <AccountList type={type} onClickType={this.onClickType}/>}/>
+        <Route path="/report" type={type}
+               render={() => <Report type={type} onClickType={this.onClickType}/>}/>
+        <Nav type={navType}/>
       </Fragment>
     )
   }
-
-
 }
 
-export default App
+export default withRouter(App)

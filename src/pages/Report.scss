@@ -1,0 +1,54 @@
+@import "../constants.scss";
+
+.base {
+  display: block;
+  height: 50px;
+  width: 120px;
+  line-height: 50px;
+  text-align: center;
+  border-radius: 10px;
+  margin: 5px;
+  font-weight: 700;
+  border: 1px solid $borderColor;
+  box-shadow: 1px 2px 2px $borderColor;
+}
+
+.total-wrapper {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > li {
+    @extend .base;
+    cursor: pointer;
+
+    &:first-child {
+      color: $deficitColor;
+    }
+
+    &:last-child {
+      color: $profitColor;
+    }
+  }
+}
+
+.total {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > span {
+    @extend .base;
+
+    &.profit {
+      color: $profitColor;
+    }
+
+    &.deficit {
+      color: $deficitColor;
+    }
+  }
+}

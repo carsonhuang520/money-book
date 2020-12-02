@@ -4,35 +4,24 @@ import './Nav.scss'
 class Nav extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      type: 'jizhang'
-    }
-  }
-
-  onClickRoute = (type) => {
-    this.setState({
-      type
-    })
+    this.state = {}
   }
 
   render() {
-    const {type} = this.state
+    const {type} = this.props
     return (
       <nav className={'nav-wrapper'}>
-        <a className={`${type === 'jizhang' ? 'active' : ''}`} href={'#'}
-           onClick={() => this.onClickRoute('jizhang')}>
+        <a className={`${type === 'jizhang' ? 'active' : ''}`} href={'/'}>
           <svg className="icon category-item-content-icon" aria-hidden="true">
             <use xlinkHref="#icon-jizhang"/>
           </svg>
           <span>记账</span></a>
-        <a className={`${type === 'detail' ? 'active' : ''}`} href={'#'}
-           onClick={() => this.onClickRoute('detail')}>
+        <a className={`${type === 'detail' ? 'active' : ''}`} href={'/list'}>
           <svg className="icon category-item-content-icon" aria-hidden="true">
             <use xlinkHref="#icon-mingxi"/>
           </svg>
           <span>明细</span></a>
-        <a className={`${type === 'report' ? 'active' : ''}`} href={'#'}
-           onClick={() => this.onClickRoute('report')}>
+        <a className={`${type === 'report' ? 'active' : ''}`} href={'/report'}>
           <svg className="icon category-item-content-icon" aria-hidden="true">
             <use xlinkHref="#icon-baogao"/>
           </svg>
