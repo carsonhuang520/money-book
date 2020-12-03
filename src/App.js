@@ -5,6 +5,8 @@ import CreateAccount from './pages/CreateAccount'
 import AccountList from './pages/AccountList'
 import Report from './pages/Report'
 import {Route, withRouter} from 'react-router-dom'
+import EditCategory from './pages/EditCategory'
+import CreateCategory from './pages/CreateCategory'
 
 class App extends Component {
   constructor(props) {
@@ -28,6 +30,12 @@ class App extends Component {
     })
   }
 
+  onClickNav = (type) => {
+    this.setState({
+      navType: type
+    })
+  }
+
   render() {
     const {type, navType} = this.state
     return (
@@ -38,7 +46,11 @@ class App extends Component {
                render={() => <AccountList type={type} onClickType={this.onClickType}/>}/>
         <Route path="/report" type={type}
                render={() => <Report type={type} onClickType={this.onClickType}/>}/>
-        <Nav type={navType}/>
+        <Route path="/editCategory" type={type}
+               render={() => <EditCategory type={type} onClickType={this.onClickType}/>}/>
+        <Route path="/addCategory" type={type}
+               render={() => <CreateCategory type={type} onClickType={this.onClickType}/>}/>
+        <Nav type={navType} onClickNav={this.onClickNav}/>
       </Fragment>
     )
   }
