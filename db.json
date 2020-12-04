@@ -60,7 +60,13 @@
       "id": "10",
       "type": "outcome"
     },
-	{
+    {
+      "name": "其他",
+      "iconName": "qita",
+      "id": "1000",
+      "type": "outcome"
+    },
+    {
       "name": "编辑",
       "iconName": "you",
       "id": "999",
@@ -90,11 +96,69 @@
       "id": "14",
       "type": "income"
     },
-	{
+    {
+      "name": "其他",
+      "iconName": "qita",
+      "id": "1000",
+      "type": "income"
+    },
+    {
       "name": "编辑",
       "iconName": "you",
       "id": "999",
       "type": "income"
+    }
+  ],
+  "newCategory": [
+    {
+      "id": 1,
+      "name": "caipiao",
+      "type": "outcome"
+    },
+    {
+      "id": 2,
+      "name": "licai",
+      "type": "outcome"
+    },
+    {
+      "id": 3,
+      "name": "xinyongqia",
+      "type": "outcome"
+    },
+    {
+      "id": 4,
+      "name": "zuanshi",
+      "type": "outcome"
+    },
+    {
+      "id": 5,
+      "name": "naicha",
+      "type": "outcome"
+    },
+    {
+      "id": 6,
+      "name": "bitebi",
+      "type": "outcome"
+    },
+    {
+      "id": 7,
+      "name": "youxi",
+      "type": "outcome"
+    },
+    {
+      "id": 8,
+      "name": "mao",
+      "type": "outcome"
+    },
+    {
+      "id": 9,
+      "name": "gou",
+      "type": "outcome"
+    },
+    {
+      "id": 10,
+      "name": "huatong",
+      "type": "outcome"
     }
   ],
   "items": [
