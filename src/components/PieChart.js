@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import echarts from 'echarts'
+import withContext from '../withContext'
 
 let outcomeData = [{name: '吃饭', value: 200}, {name: '购物', value: 124},
   {name: '电影', value: 20}, {name: '车票', value: 20}, {name: '娱乐', value: 200},
@@ -17,7 +18,15 @@ class PieChart extends Component {
   }
 
   componentDidMount() {
-    const {type} = this.props
+    const {type, data} = this.props
+    const {categories, items} = data
+    let categoriesFlattern = categories.reduce((prev, item) => {
+      prev[item.id] = item
+      return prev
+    }, {})
+    // let temp = items.forEach(item => {
+    //   if(!temp[categories[]])
+    // })
     let myChart = echarts.init(document.getElementById('pie-chart'))
     let seriesData = type === 'outcome' ? outcomeData : incomeData
     let legendData = seriesData.map(item => item.name)
@@ -65,24 +74,20 @@ class PieChart extends Component {
     })
   }
 
-  changeData() {
-    const {type} = this.props
-    const {myChart, option} = this.state
-    let seriesData = type === 'outcome' ? outcomeData : incomeData
-    let legendData = seriesData.map(item => item.name)
+  changeData(data) {
+    const {option, myChart} = this.state
+    const legendData = data.map(item => item.name)
     let temp = JSON.parse(JSON.stringify(option))
     temp.legend.data = legendData
-    temp.series[0].data = seriesData
+    temp.series[0].data = data
     myChart.setOption(temp, true)
-    // this.setState({
-    //   option: temp
-    // })
   }
 
   render() {
     const {myChart, option} = this.state
+    const {chartData} = this.props
     if (myChart !== null && option !== null) {
-      this.changeData()
+      this.changeData(chartData)
     }
     return (
       <div
@@ -97,4 +102,4 @@ class PieChart extends Component {
   }
 }
 
-export default PieChart
+export default withContext(PieChart)

@@ -259,13 +259,7 @@
       "monthCategory": "2020-11",
       "timestamp": 1544227200000,
       "id": "_dotug7vnn",
-      "cid": "10",
-      "category": {
-        "name": "工资",
-        "iconName": "ios-card",
-        "id": "10",
-        "type": "income"
-      }
+      "cid": "10"
     },
     {
       "name": "修改shopping",
@@ -274,13 +268,7 @@
       "monthCategory": "2020-11",
       "timestamp": 1606608000000,
       "id": "_s0d8mh296",
-      "cid": "11",
-      "category": {
-        "name": "购物",
-        "iconName": "ios-basket",
-        "id": "3",
-        "type": "outcome"
-      }
+      "cid": "11"
     },
     {
       "name": "保养",
@@ -298,7 +286,7 @@
       "monthCategory": "2020-11",
       "timestamp": 1606608000000,
       "id": "_ymu6zzf73",
-      "cid": "15"
+      "cid": "14"
     }
   ]
 }
