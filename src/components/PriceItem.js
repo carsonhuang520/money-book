@@ -1,10 +1,13 @@
 import React, {Component} from 'react'
+import withContext from '../withContext'
 import './PriceList.scss'
+import Icon from './Icon'
 
 function PriceItem(props) {
-  const {time, list} = props
+  const {time, list, data} = props
+  const {categories} = data
   const total = list.reduce((prev, cur) => {
-    prev = prev + (cur.type === 'outcome' ? -1 * cur.price : cur.price)
+    prev = prev + (categories[cur.cid].type === 'outcome' ? -1 * cur.price : cur.price)
     return prev
   }, 0)
   return (
@@ -15,15 +18,13 @@ function PriceItem(props) {
       </h3>
       <ul className={'priceItem-list'}>
         {
-          list.length && list.map(item => {
+          list.map(item => {
             return (<li key={item.id} className={'priceItem-item'}>
               <span>
-                <svg className={`icon priceItem-item-icon`} aria-hidden="true">
-                  <use xlinkHref="#icon-yinshi"/>
-                </svg>
+                <Icon name={categories[item.cid].iconName}/>
                 <span>{item.name}</span>
               </span>
-              <span>{(item.type === 'outcome' ? '-' : '+') + item.price}</span>
+              <span>{(categories[item.cid].type === 'outcome' ? '-' : '+') + item.price}</span>
             </li>)
           })
         }
@@ -32,4 +33,4 @@ function PriceItem(props) {
   )
 }
 
-export default PriceItem
+export default withContext(PriceItem)

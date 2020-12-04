@@ -24,19 +24,47 @@ class App extends Component {
     this.state = {
       type: 'outcome',
       navType: nav,
-      categories: []
+      categories: [],
+      items: []
+    }
+    this.actions = {
+      initData: () => {
+        const promiseArray = [axios.get('/categories'), axios.get('/items?_sort=timestamp&_order=desc')]
+        Promise.all(promiseArray).then(res => {
+          const [categories, items] = res
+          this.setState({
+            categories: categories.data,
+            items: items.data
+          })
+        }).catch(error => {
+          console.log(error)
+        })
+      },
+      getListByDate: (date) => {
+        axios.get(`/items?monthCategory=${date}&_sort=timestamp&_order=desc`).then(res => {
+          this.setState({
+            items: res.data
+          })
+        }).catch(err => {
+          console.log(err)
+        })
+      }
     }
   }
 
-  componentDidMount() {
-    axios.get('/categories').then(res => {
-      this.setState({
-        categories: res.data
-      })
-    }).catch(error => {
-      console.log(error)
-    })
-  }
+  // componentDidMount() {
+  //   console.log('hhhh')
+  //   axios.get('/categories').then(res => {
+  //
+  //     this.setState({
+  //       categories: res.data
+  //
+  //     })
+  //     console.log(this.state.categories)
+  //   }).catch(error => {
+  //     console.log(error)
+  //   })
+  // }
 
   onClickType = (type) => {
     this.setState({
@@ -53,7 +81,7 @@ class App extends Component {
   render() {
     const {type, navType} = this.state
     return (
-      <AppContext.Provider value={{state: this.state}}>
+      <AppContext.Provider value={{state: this.state, actions: this.actions}}>
         <Route exact path="/" type={type}
                render={() => <CreateAccount type={type} onClickType={this.onClickType}/>}/>
         <Route path="/list" type={type}

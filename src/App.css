@@ -2,6 +2,7 @@
 .App {
   text-align: center;
 }
+
 .main-wrapper {
   flex: 1;
   overflow: auto;
