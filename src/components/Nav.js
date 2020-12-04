@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import './Nav.scss'
 import {withRouter} from 'react-router-dom'
+import Icon from './Icon'
 
 class Nav extends Component {
   constructor(props) {
@@ -26,21 +27,15 @@ class Nav extends Component {
       <nav className={'nav-wrapper'}>
         <a className={`${type === 'jizhang' ? 'active' : ''}`} href={'#'}
            onClick={(e) => this.onClickNav(e, 'jizhang')}>
-          <svg className="icon category-item-content-icon" aria-hidden="true">
-            <use xlinkHref="#icon-jizhang"/>
-          </svg>
+          <Icon name={'jizhang'}/>
           <span>记账</span></a>
         <a className={`${type === 'detail' ? 'active' : ''}`} href={'#'}
            onClick={(e) => this.onClickNav(e, 'detail')}>
-          <svg className="icon category-item-content-icon" aria-hidden="true">
-            <use xlinkHref="#icon-mingxi"/>
-          </svg>
+          <Icon name={'mingxi'}/>
           <span>明细</span></a>
         <a className={`${type === 'report' ? 'active' : ''}`} href={'#'}
            onClick={(e) => this.onClickNav(e, 'report')}>
-          <svg className="icon category-item-content-icon" aria-hidden="true">
-            <use xlinkHref="#icon-baogao"/>
-          </svg>
+          <Icon name={'baogao'}/>
           <span>报告</span></a>
       </nav>
     )

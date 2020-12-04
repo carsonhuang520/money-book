@@ -1,24 +1,22 @@
 import React, {Component, Fragment} from 'react'
 import {withRouter} from 'react-router-dom'
+import withContext from '../withContext'
 import './Category.scss'
-
-const outComeCategories = ['购物', '饮食', '购物', '饮食', '购物', '饮食', '购物',
-  '饮食', '购物', '饮食', '购物', '饮食', '购物', '饮食', '购物', '饮食', '购物', '饮食', '编辑']
-const inComeCategories = ['工资', '兼职', '编辑']
+import Icon from './Icon'
 
 class Category extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      current: 0
+      current: '1'
     }
   }
 
-  onClickItem = (index, item) => {
+  onClickItem = (item) => {
     this.setState({
-      current: index
+      current: item.id
     })
-    if (item === '编辑') {
+    if (item.name === '编辑') {
       this.props.history.push('/editCategory')
     }
   }
@@ -26,36 +24,32 @@ class Category extends Component {
 
   render() {
     const {current} = this.state
-    const {type, label} = this.props
-    const categories = type === 'outcome' ? outComeCategories : inComeCategories
+    const {type, label, data} = this.props
+    let {categories} = data
+    categories = categories.filter(item => item.type === type)
     return (
       <Fragment>
         <p className={'category-label'}>{label ? label : '分类'}</p>
         <div className={'category-wrapper'}>
           <ul className={'category-list'}>
             {
-              categories.map((item, index) => {
-                return (item !== '编辑' ?
-                  <li key={index} className={'category-item'} onClick={() => this.onClickItem(index, type)}>
-                    <div className={`category-item-content ${index === current ? 'active' : ''}`}>
-                      <svg className={`icon category-item-content-icon ${current === index ? 'active' : ''}`}
-                           aria-hidden="true">
-                        <use xlinkHref="#icon-yinshi"/>
-                      </svg>
+              categories.map((item) => {
+                return (item.name !== '编辑' ? (
+                  <li key={item.id} className={'category-item'} onClick={() => this.onClickItem(item)}>
+                    <div className={`category-item-content ${item.id === current ? 'active' : ''}`}>
+                      <Icon name={item.iconName}/>
                       <span className={'category-item-content-name'}>
-                    {item}
+                    {item.name}
                   </span>
                     </div>
-                  </li> : <li key={index} className={'category-item'} onClick={() => this.onClickItem(index, item)}>
-                    <div className={`category-item-edit ${index === current ? 'active' : ''}`}>
-                  <span className={'category-item-content-name'}>
-                    {item}
-                  </span>
-                      <svg className="icon category-item-content-icon" aria-hidden="true">
-                        <use xlinkHref="#icon-you"/>
-                      </svg>
-                    </div>
-                  </li>)
+                  </li>) : (<li key={item.id} className={'category-item'} onClick={() => this.onClickItem(item)}>
+                  <div className={`category-item-edit ${item.id === current ? 'active' : ''}`}>
+                      <span className={'category-item-content-name'}>
+                        {item.name}
+                      </span>
+                    <Icon name={item.iconName}/>
+                  </div>
+                </li>))
               })
             }
           </ul>
@@ -66,4 +60,4 @@ class Category extends Component {
 
 }
 
-export default withRouter(Category)
+export default withRouter(withContext(Category))

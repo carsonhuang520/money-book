@@ -3,73 +3,8 @@ import {Modal} from 'antd'
 import {withRouter} from 'react-router-dom'
 import {QuestionCircleOutlined} from '@ant-design/icons'
 import './CategoryList.scss'
-
-const categoies = [
-  {
-    icon: '',
-    name: '饮食费'
-  },
-  {
-    icon: '',
-    name: '日用品'
-  },
-  {
-    icon: '',
-    name: '车票'
-  },
-  {
-    icon: '',
-    name: '住宿费'
-  },
-  {
-    icon: '',
-    name: '交际费'
-  },
-  {
-    icon: '',
-    name: '医疗费'
-  },
-  {
-    icon: '',
-    name: '水电费'
-  },
-  {
-    icon: '',
-    name: '交通费'
-  },
-  {
-    icon: '',
-    name: '饮食费'
-  },
-  {
-    icon: '',
-    name: '日用品'
-  },
-  {
-    icon: '',
-    name: '车票'
-  },
-  {
-    icon: '',
-    name: '住宿费'
-  },
-  {
-    icon: '',
-    name: '交际费'
-  },
-  {
-    icon: '',
-    name: '医疗费'
-  },
-  {
-    icon: '',
-    name: '水电费'
-  },
-  {
-    icon: '',
-    name: '交通费'
-  }
-]
+import Icon from './Icon'
+import withContext from '../withContext'
 
 class CategoryList extends Component {
   confirm() {
@@ -88,27 +23,24 @@ class CategoryList extends Component {
   }
 
   render() {
+    const {type, data} = this.props
+    let {categories} = data
+    categories = categories.filter(item => item.type === type && item.name !== '编辑')
     return (
       <div className={'categoryList-wrapper'}>
         <ul className={'categoryList'}>
           <li onClick={this.toAddCategory}>
             <span>追加新的标签</span>
-            <svg className={'icon'} aria-hidden={true}>
-              <use xlinkHref={'#icon-you'}/>
-            </svg>
+            <Icon name={'you'}/>
           </li>
           {
-            categoies.map((item, index) => {
-              return (<li key={index}>
+            categories.map((item, index) => {
+              return (<li key={item.id}>
                 <span className={'categoryList-item'}>
-                  <svg className={'icon categoryList-item-icon'} aria-hidden={true}>
-                    <use xlinkHref={'#icon-yinshi'}/>
-                  </svg>
+                  <Icon name={item.iconName}/>
                   <span>{item.name}</span>
                 </span>
-                <svg className={'icon'} aria-hidden={true} onClick={this.confirm}>
-                  <use xlinkHref={'#icon-delete'}/>
-                </svg>
+                <Icon name={'delete'}/>
               </li>)
             })
           }
@@ -118,4 +50,4 @@ class CategoryList extends Component {
   }
 }
 
-export default withRouter(CategoryList)
+export default withRouter(withContext(CategoryList))

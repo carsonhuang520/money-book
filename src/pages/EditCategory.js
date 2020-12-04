@@ -9,7 +9,7 @@ class EditCategory extends Component {
       <Fragment>
         <Header type={type} onClickType={onClickType}/>
         <main className={'main-wrapper'}>
-          <CategoryList/>
+          <CategoryList type={type}/>
         </main>
       </Fragment>
     )
