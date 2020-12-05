@@ -8,7 +8,7 @@ import {Route, withRouter} from 'react-router-dom'
 import EditCategory from './pages/EditCategory'
 import CreateCategory from './pages/CreateCategory'
 import axios from 'axios'
-import {ID, success} from './utils'
+import {getYearAndMonth, ID, success} from './utils'
 
 export const AppContext = createContext()
 
@@ -29,67 +29,10 @@ class App extends Component {
       items: []
     }
     this.actions = {
-      initData: () => {
-        console.log('initData')
-        const promiseArray = [axios.get('/categories'), axios.get('/items?_sort=timestamp&_order=desc')]
-        Promise.all(promiseArray).then(res => {
-          const [categories, items] = res
-          this.setState({
-            categories: categories.data,
-            items: items.data
-          })
-        }).catch(error => {
-          console.log(error)
-        })
-      },
-      createItem: (item, category) => {
-        const newId = ID()
-        const {date, name, money} = item
-        item.monthCategory = date.substring(0, date.lastIndexOf('-'))
-        item.timestamp = new Date(date).getTime()
-        const newItem = {
-          name,
-          date,
-          price: parseInt(money),
-          id: newId,
-          timestamp: item.timestamp,
-          monthCategory: item.monthCategory,
-          cid: category.id
-        }
-        axios.post(`/items`, newItem).then(() => {
-          const newItems = JSON.parse(JSON.stringify(this.state.items))
-          newItems.push(newItem)
-          this.setState({
-            items: newItems
-          })
-          success('已保存')
-        })
-      },
-      getListByDate: (date) => {
-        axios.get(`/items?monthCategory=${date}&_sort=timestamp&_order=desc`).then(res => {
-          this.setState({
-            items: res.data
-          })
-        }).catch(err => {
-          console.log(err)
-        })
-      }
+
+
     }
   }
-
-  // componentDidMount() {
-  //   console.log('hhhh')
-  //   axios.get('/categories').then(res => {
-  //
-  //     this.setState({
-  //       categories: res.data
-  //
-  //     })
-  //     console.log(this.state.categories)
-  //   }).catch(error => {
-  //     console.log(error)
-  //   })
-  // }
 
   onClickType = (type) => {
     this.setState({

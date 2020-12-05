@@ -350,6 +350,15 @@
       "timestamp": 1607126400000,
       "monthCategory": "2020-12",
       "cid": "9"
+    },
+    {
+      "name": "买衣服",
+      "date": "2020-12-05",
+      "price": 300,
+      "id": "_4cogjymaj",
+      "timestamp": 1607126400000,
+      "monthCategory": "2020-12",
+      "cid": "10"
     }
   ]
 }

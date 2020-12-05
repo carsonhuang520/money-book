@@ -8,8 +8,7 @@ class PriceList extends Component {
   }
 
   render() {
-    const {data: {items}} = this.props
-    console.log(this.props)
+    const {items, categories} = this.props
     let list = {}
     items.forEach(item => {
       if (!list[item.date]) {
@@ -22,7 +21,7 @@ class PriceList extends Component {
       <div className={'priceList-wrapper'}>
         {
           times.length ? times.map(item => {
-            return <PriceItem key={item} time={item} list={list[item]}/>
+            return <PriceItem key={item} categories={categories} time={item} list={list[item]}/>
           }) : '暂无记录'
         }
       </div>

@@ -2,6 +2,9 @@ import React, {Component} from 'react'
 import {DatePicker} from 'antd'
 import locale from 'antd/es/date-picker/locale/zh_CN'
 import './Calendar.scss'
+import moment from 'moment'
+
+const dateFormat = 'YYYY-MM'
 
 class Calendar extends Component {
   constructor(props) {
@@ -9,7 +12,6 @@ class Calendar extends Component {
   }
 
   onChange = (date, dateString) => {
-    console.log(date, dateString)
     this.props.onChangeDate(dateString)
   }
 
@@ -17,7 +19,8 @@ class Calendar extends Component {
     const {date} = this.props
     return (
       <div className={'calendar-wrapper'}>
-        <DatePicker className={'calendar'} picker="month" locale={locale} onChange={this.onChange}/>
+        <DatePicker className={'calendar'} picker="month" value={moment(date, dateFormat)}
+                    locale={locale} onChange={this.onChange}/>
       </div>
     )
   }

@@ -75,7 +75,7 @@ class RecordForm extends Component {
       name,
       money: money.split(',').join('')
     }
-    this.props.actions.createItem(info, category)
+    this.props.createItem(info, category)
   }
   onClickItem = (item) => {
     this.setState({
@@ -84,9 +84,8 @@ class RecordForm extends Component {
   }
 
   render() {
-    const {type, data} = this.props
+    let {type, categories } = this.props
     const {date, name, money, category} = this.state
-    let {categories} = data
     categories = categories.filter(item => item.type === type)
     return (
       <Fragment>

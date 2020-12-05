@@ -5,8 +5,8 @@ import Icon from './Icon'
 import {toThousandFilter} from '../utils'
 
 function PriceItem(props) {
-  const {time, list, data} = props
-  const {categories} = data
+  const {time, list, data, categories} = props
+  // const {categories} = data
   const categoriesFlattern = categories.reduce((prev, item) => {
     prev[item.id] = item
     return prev

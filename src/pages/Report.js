@@ -5,31 +5,65 @@ import PieChart from '../components/PieChart'
 import withContext from '../withContext'
 import './Report.scss'
 import {withRouter} from 'react-router-dom'
+import {getYearAndMonth} from '../utils'
+import axios from 'axios'
 
 class Report extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      dateString: '',
+      dateString: getYearAndMonth('month'),
       totalOutcome: 0,
-      totalIncome: 0
+      totalIncome: 0,
+      items: [],
+      categories: [],
     }
   }
 
   componentDidMount() {
-    this.props.actions.initData()
+    const {dateString} = this.state
+    this.initData(dateString)
+  }
+
+  initData = (date) => {
+    const url = !!date
+      ? `/items?monthCategory=${date}&_sort=timestamp&_order=desc`
+      : `/items?_sort=timestamp&_order=desc`
+    const promiseArray = [
+      axios.get('/categories'),
+      axios.get(url)
+    ]
+    Promise.all(promiseArray).then(res => {
+      const [categories, items] = res
+      this.setState({
+        categories: categories.data,
+        items: items.data
+      })
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
+  getListByDate = (date) => {
+    axios.get(`/items?monthCategory=${date}&_sort=timestamp&_order=desc`).then(res => {
+      this.setState({
+        items: res.data
+      })
+    }).catch(err => {
+      console.log(err)
+    })
   }
 
   onChangeDate = (date) => {
     this.setState({
       dateString: date
     })
-    this.props.actions.getListByDate(date)
+    this.getListByDate(date)
   }
 
   handleChartData() {
-    const {type, data} = this.props
-    const {categories, items} = data
+    const {type} = this.props
+    const {categories, items} = this.state
     let categoriesFlattern = categories.reduce((prev, item) => {
       prev[item.id] = item
       return prev
@@ -82,16 +116,16 @@ class Report extends Component {
       }, 0)
     }
     if (type === 'outcome') {
-      return {data: outcome, totalIncome, totalOutcome}
+      return {chartData: outcome, totalIncome, totalOutcome}
     } else {
-      return {data: income, totalIncome, totalOutcome}
+      return {chartData: income, totalIncome, totalOutcome}
     }
   }
 
   render() {
-    const {dateString} = this.state
     const {type, onClickType} = this.props
-    const {data, totalOutcome, totalIncome} = this.handleChartData()
+    const {dateString} = this.state
+    const {chartData, totalOutcome, totalIncome} = this.handleChartData()
     const balance = totalIncome - totalOutcome
     return (
       <Fragment>
@@ -105,7 +139,7 @@ class Report extends Component {
           <div className={'total'}>
             <span className={`${balance < 0 ? 'deficit' : 'profit'}`}>{`共计: ${balance}`}</span>
           </div>
-          <PieChart type={type} chartData={data}/>
+          <PieChart type={type} chartData={chartData}/>
         </main>
       </Fragment>
     )
