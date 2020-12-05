@@ -5,7 +5,7 @@ import PieChart from '../components/PieChart'
 import withContext from '../withContext'
 import './Report.scss'
 import {withRouter} from 'react-router-dom'
-import {getYearAndMonth} from '../utils'
+import {getYearAndMonth, toThousandFilter} from '../utils'
 import axios from 'axios'
 import EmptyData from '../components/EmptyData'
 import Loading from '../components/Loading'
@@ -146,15 +146,15 @@ class Report extends Component {
           <Calendar date={dateString} onChangeDate={this.onChangeDate}/>
           <ul className={'total-wrapper'}>
             <li className={`total-outcome ${isEmpty ? '' : 'empty'}`} onClick={() => onClickType('outcome')}>
-              {'-' + (isEmpty ? totalOutcome : '')}
+              {'-' + (isEmpty ? toThousandFilter(totalOutcome) : '')}
             </li>
             <li className={`total-income ${isEmpty ? '' : 'empty'}`} onClick={() => onClickType('income')}>
-              {'+' + (isEmpty ? totalIncome : '')}
+              {'+' + (isEmpty ? toThousandFilter(totalIncome) : '')}
             </li>
           </ul>
           <div className={'total'}>
             <span className={`${balance < 0 ? 'deficit' : 'profit'} ${isEmpty ? '' : 'empty'}`}>
-              {`共计: ${(isEmpty ? balance : '')}`}
+              {`共计: ${(isEmpty ? toThousandFilter(balance) : '')}`}
             </span>
           </div>
           {

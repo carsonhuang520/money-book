@@ -50,7 +50,7 @@ class CategoryList extends Component {
                   <Icon name={'delete'}/>
                 </span>
               </li>)
-            }) : <EmptyData/>
+            }) : '暂无标签'
           }
         </ul>
       </div>

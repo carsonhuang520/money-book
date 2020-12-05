@@ -37,6 +37,12 @@
       "type": "outcome"
     },
     {
+      "name": "应酬",
+      "iconName": "jiubei",
+      "id": "7",
+      "type": "outcome"
+    },
+    {
       "name": "美容费",
       "iconName": "meirong",
       "id": "8",
@@ -101,6 +107,18 @@
       "iconName": "you",
       "id": "999",
       "type": "income"
+    },
+    {
+      "name": "奶茶",
+      "id": "_70y74tgxl",
+      "type": "outcome",
+      "iconName": "naicha"
+    },
+    {
+      "name": "游戏卖号",
+      "id": "_jgb7nxifg",
+      "type": "income",
+      "iconName": "youxi"
     }
   ],
   "newCategory": [

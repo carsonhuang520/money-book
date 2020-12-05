@@ -7,22 +7,15 @@ import Icon from './Icon'
 class IconList extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      current: 1
-    }
   }
 
   onClickItem = (item) => {
-    this.setState({
-      current: item.id
-    })
+    this.props.onClickItem(item)
   }
 
 
   render() {
-    const {current} = this.state
-    const {type, categories} = this.props
-    // categories = categories.filter(item => item.type === type)
+    const {current, categories} = this.props
     return (
       <Fragment>
         <div className={'category-wrapper'}>
@@ -31,7 +24,7 @@ class IconList extends Component {
               categories.map((item) => {
                 return (
                   <li key={item.id} className={'category-item'} onClick={() => this.onClickItem(item)}>
-                    <div className={`category-item-content newIcon ${item.id === current ? 'active' : ''}`}>
+                    <div className={`category-item-content newIcon ${item.id === current.id ? 'active' : ''}`}>
                       <Icon name={item.name}/>
                     </div>
                   </li>)
