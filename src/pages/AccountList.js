@@ -14,6 +14,7 @@ class AccountList extends Component {
   }
 
   componentDidMount() {
+    console.log('init')
     this.props.actions.initData()
   }
 
@@ -33,7 +34,7 @@ class AccountList extends Component {
         <header className={'header-wrapper'}>明细</header>
         <main className={'main-wrapper'}>
           <Calendar date={dateString} onChangeDate={this.onChangeDate}/>
-          <PriceList items={items}/>
+          <PriceList/>
         </main>
       </Fragment>
     )

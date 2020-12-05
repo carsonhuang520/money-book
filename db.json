@@ -287,6 +287,69 @@
       "timestamp": 1606608000000,
       "id": "_ymu6zzf73",
       "cid": "14"
+    },
+    {
+      "date": "2020-12-05",
+      "name": "看牙齿",
+      "price": 600,
+      "monthCategory": "2020-12",
+      "timestamp": 1607126400000,
+      "id": "_sqxc7pxad",
+      "cid": "4"
+    },
+    {
+      "name": "买鞋子",
+      "date": "2020-12-05",
+      "price": 2000,
+      "id": "_xmpd4gr3f",
+      "timestamp": 1607126400000,
+      "monthCategory": "2020-12",
+      "cid": "2"
+    },
+    {
+      "name": "发工资啦",
+      "date": "2020-12-05",
+      "price": 12000,
+      "id": "_qrep7eq2l",
+      "timestamp": 1607126400000,
+      "monthCategory": "2020-12",
+      "cid": "11"
+    },
+    {
+      "name": "充话费",
+      "date": "2020-12-05",
+      "price": 100,
+      "id": "_oubymieqj",
+      "timestamp": 1607126400000,
+      "monthCategory": "2020-12",
+      "cid": "6"
+    },
+    {
+      "name": "房租",
+      "date": "2020-12-05",
+      "price": 1500,
+      "id": "_7evwbfxzg",
+      "timestamp": 1607126400000,
+      "monthCategory": "2020-12",
+      "cid": "3"
+    },
+    {
+      "name": "应酬",
+      "date": "2020-12-05",
+      "price": 2000,
+      "id": "_6pxnnr38w",
+      "timestamp": 1607126400000,
+      "monthCategory": "2020-12",
+      "cid": "7"
+    },
+    {
+      "name": "四六级报名",
+      "date": "2020-12-05",
+      "price": 30,
+      "id": "_txe42819k",
+      "timestamp": 1607126400000,
+      "monthCategory": "2020-12",
+      "cid": "9"
     }
   ]
 }

@@ -7,43 +7,35 @@ import Icon from './Icon'
 class Category extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      current: '1'
-    }
   }
 
   onClickItem = (item) => {
-    this.setState({
-      current: item.id
-    })
     if (item.name === '编辑') {
       this.props.history.push('/editCategory')
     }
+    this.props.onClickItem(item)
   }
 
 
   render() {
-    const {current} = this.state
-    const {type, label, data} = this.props
-    let {categories} = data
-    categories = categories.filter(item => item.type === type)
+    const {currentItem, categories} = this.props
     return (
       <Fragment>
-        <p className={'category-label'}>{label ? label : '分类'}</p>
+        <p className={'category-label'}>{'分类'}</p>
         <div className={'category-wrapper'}>
           <ul className={'category-list'}>
             {
               categories.map((item) => {
                 return (item.name !== '编辑' ? (
                   <li key={item.id} className={'category-item'} onClick={() => this.onClickItem(item)}>
-                    <div className={`category-item-content ${item.id === current ? 'active' : ''}`}>
+                    <div className={`category-item-content ${item.id === currentItem.id ? 'active' : ''}`}>
                       <Icon name={item.iconName}/>
                       <span className={'category-item-content-name'}>
                     {item.name}
                   </span>
                     </div>
                   </li>) : (<li key={item.id} className={'category-item'} onClick={() => this.onClickItem(item)}>
-                  <div className={`category-item-edit ${item.id === current ? 'active' : ''}`}>
+                  <div className={`category-item-edit ${item.id === currentItem.id ? 'active' : ''}`}>
                       <span className={'category-item-content-name'}>
                         {item.name}
                       </span>

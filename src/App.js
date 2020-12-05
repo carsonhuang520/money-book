@@ -8,6 +8,7 @@ import {Route, withRouter} from 'react-router-dom'
 import EditCategory from './pages/EditCategory'
 import CreateCategory from './pages/CreateCategory'
 import axios from 'axios'
+import {ID, success} from './utils'
 
 export const AppContext = createContext()
 
@@ -29,6 +30,7 @@ class App extends Component {
     }
     this.actions = {
       initData: () => {
+        console.log('initData')
         const promiseArray = [axios.get('/categories'), axios.get('/items?_sort=timestamp&_order=desc')]
         Promise.all(promiseArray).then(res => {
           const [categories, items] = res
@@ -38,6 +40,29 @@ class App extends Component {
           })
         }).catch(error => {
           console.log(error)
+        })
+      },
+      createItem: (item, category) => {
+        const newId = ID()
+        const {date, name, money} = item
+        item.monthCategory = date.substring(0, date.lastIndexOf('-'))
+        item.timestamp = new Date(date).getTime()
+        const newItem = {
+          name,
+          date,
+          price: parseInt(money),
+          id: newId,
+          timestamp: item.timestamp,
+          monthCategory: item.monthCategory,
+          cid: category.id
+        }
+        axios.post(`/items`, newItem).then(() => {
+          const newItems = JSON.parse(JSON.stringify(this.state.items))
+          newItems.push(newItem)
+          this.setState({
+            items: newItems
+          })
+          success('已保存')
         })
       },
       getListByDate: (date) => {

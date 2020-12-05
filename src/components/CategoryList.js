@@ -13,8 +13,7 @@ class CategoryList extends Component {
       centered: true,
       icon: <QuestionCircleOutlined/>,
       okText: '确认',
-      cancelText: '取消',
-      okButtonProps: {background: '#61dafb'}
+      cancelText: '取消'
     })
   }
 
@@ -40,7 +39,9 @@ class CategoryList extends Component {
                   <Icon name={item.iconName}/>
                   <span>{item.name}</span>
                 </span>
-                <Icon name={'delete'}/>
+                <span onClick={this.confirm.bind(this)}>
+                  <Icon name={'delete'}/>
+                </span>
               </li>)
             })
           }

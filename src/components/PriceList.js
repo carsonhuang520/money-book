@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import PriceItem from './PriceItem'
+import withContext from '../withContext'
 
 class PriceList extends Component {
   constructor(props) {
@@ -7,7 +8,8 @@ class PriceList extends Component {
   }
 
   render() {
-    const {items} = this.props
+    const {data: {items}} = this.props
+    console.log(this.props)
     let list = {}
     items.forEach(item => {
       if (!list[item.date]) {
@@ -28,4 +30,4 @@ class PriceList extends Component {
   }
 }
 
-export default PriceList
+export default withContext(PriceList)
