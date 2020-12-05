@@ -37,12 +37,6 @@
       "type": "outcome"
     },
     {
-      "name": "应酬",
-      "iconName": "jiubei",
-      "id": "7",
-      "type": "outcome"
-    },
-    {
       "name": "美容费",
       "iconName": "meirong",
       "id": "8",
