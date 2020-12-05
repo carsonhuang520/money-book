@@ -27,10 +27,18 @@
 
     &:first-child {
       color: $deficitColor;
+
+      &.empty {
+        color: #d3d3d3;
+      }
     }
 
     &:last-child {
       color: $profitColor;
+
+      &.empty {
+        color: #d3d3d3;
+      }
     }
   }
 }
@@ -49,6 +57,10 @@
 
     &.deficit {
       color: $deficitColor;
+    }
+
+    &.empty {
+      color: #d3d3d3;
     }
   }
 }

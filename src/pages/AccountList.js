@@ -5,6 +5,8 @@ import Calendar from '../components/Calendar'
 import withContext from '../withContext'
 import {getYearAndMonth} from '../utils'
 import axios from 'axios'
+import EmptyData from '../components/EmptyData'
+import Loading from '../components/Loading'
 
 class AccountList extends Component {
   constructor(props) {
@@ -12,7 +14,8 @@ class AccountList extends Component {
     this.state = {
       items: [],
       categories: [],
-      dateString: getYearAndMonth('month')
+      dateString: getYearAndMonth('month'),
+      isLoading: false
     }
   }
 
@@ -22,6 +25,9 @@ class AccountList extends Component {
   }
 
   initData = (date) => {
+    this.setState({
+      isLoading: true
+    })
     const url = !!date
       ? `/items?monthCategory=${date}&_sort=timestamp&_order=desc`
       : `/items?_sort=timestamp&_order=desc`
@@ -33,7 +39,8 @@ class AccountList extends Component {
       const [categories, items] = res
       this.setState({
         categories: categories.data,
-        items: items.data
+        items: items.data,
+        isLoading: false
       })
     }).catch(error => {
       console.log(error)
@@ -48,9 +55,13 @@ class AccountList extends Component {
   }
 
   getListByDate = (date) => {
+    this.setState({
+      isLoading: true
+    })
     axios.get(`/items?monthCategory=${date}&_sort=timestamp&_order=desc`).then(res => {
       this.setState({
-        items: res.data
+        items: res.data,
+        isLoading: false
       })
     }).catch(err => {
       console.log(err)
@@ -59,13 +70,17 @@ class AccountList extends Component {
 
   render() {
     const {type, onClickType, data} = this.props
-    const {dateString, categories, items} = this.state
+    const {dateString, categories, items, isLoading} = this.state
     return (
       <Fragment>
         <header className={'header-wrapper'}>明细</header>
         <main className={'main-wrapper'}>
           <Calendar date={dateString} onChangeDate={this.onChangeDate}/>
-          <PriceList categories={categories} items={items}/>
+          {
+            isLoading
+              ? <Loading/>
+              : (items.length ? <PriceList categories={categories} items={items}/> : <EmptyData/>)
+          }
         </main>
       </Fragment>
     )

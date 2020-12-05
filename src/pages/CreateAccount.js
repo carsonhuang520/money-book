@@ -11,6 +11,8 @@ class CreateAccount extends Component {
     this.state = {
       items: [],
       categories: [],
+      isLoading: false,
+      isBtnLoading: false
     }
   }
 
@@ -19,6 +21,9 @@ class CreateAccount extends Component {
   }
 
   initData = (dateString) => {
+    this.setState({
+      isLoading: true
+    })
     const url = !!dateString
       ? `/items?monthCategory=${dateString}&_sort=timestamp&_order=desc`
       : `/items?_sort=timestamp&_order=desc`
@@ -30,7 +35,8 @@ class CreateAccount extends Component {
       const [categories, items] = res
       this.setState({
         categories: categories.data,
-        items: items.data
+        items: items.data,
+        isLoading: false
       })
     }).catch(error => {
       console.log(error)
@@ -38,6 +44,9 @@ class CreateAccount extends Component {
   }
 
   createItem = (item, category) => {
+    this.setState({
+      isBtnLoading: true
+    })
     const newId = ID()
     const {date, name, money} = item
     item.monthCategory = date.substring(0, date.lastIndexOf('-'))
@@ -55,7 +64,8 @@ class CreateAccount extends Component {
       const newItems = JSON.parse(JSON.stringify(this.state.items))
       newItems.push(newItem)
       this.setState({
-        items: newItems
+        items: newItems,
+        isBtnLoading: false
       })
       success('已保存')
     })
@@ -63,7 +73,7 @@ class CreateAccount extends Component {
 
   render() {
     const {type, onClickType} = this.props
-    const {categories} = this.state
+    const {categories, isLoading, isBtnLoading} = this.state
     return (
       <Fragment>
         <Header type={type} onClickType={onClickType}/>
@@ -71,6 +81,8 @@ class CreateAccount extends Component {
           <RecordForm createItem={this.createItem}
                       categories={categories}
                       type={type}
+                      isLoading={isLoading}
+                      isBtnLoading={isBtnLoading}
           />
         </main>
       </Fragment>

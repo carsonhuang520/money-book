@@ -84,7 +84,7 @@ class RecordForm extends Component {
   }
 
   render() {
-    let {type, categories } = this.props
+    let {type, categories, isLoading, isBtnLoading} = this.props
     const {date, name, money, category} = this.state
     categories = categories.filter(item => item.type === type)
     return (
@@ -114,13 +114,17 @@ class RecordForm extends Component {
               </div>
             </li>
             <li className={'form-item'}>
-              <Category type={type} currentItem={category} categories={categories}
+              <Category type={type} currentItem={category} isLoading={isLoading} categories={categories}
                         onClickItem={this.onClickItem}/>
             </li>
           </ul>
         </div>
         <div className={'button-wrapper'}>
-          <Button shape="round" className={'btn-create'} onClick={this.onCreateAccount}>记一笔</Button>
+          {
+            !isBtnLoading
+              ? <Button shape="round" className={'btn-create'} onClick={this.onCreateAccount}>记一笔</Button>
+              : <Button shape="round" className={'btn-create'} loading>加载中</Button>
+          }
         </div>
       </Fragment>
     )

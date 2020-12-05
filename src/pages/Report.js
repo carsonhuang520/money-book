@@ -7,6 +7,8 @@ import './Report.scss'
 import {withRouter} from 'react-router-dom'
 import {getYearAndMonth} from '../utils'
 import axios from 'axios'
+import EmptyData from '../components/EmptyData'
+import Loading from '../components/Loading'
 
 class Report extends Component {
   constructor(props) {
@@ -17,6 +19,7 @@ class Report extends Component {
       totalIncome: 0,
       items: [],
       categories: [],
+      isLoading: false
     }
   }
 
@@ -26,6 +29,9 @@ class Report extends Component {
   }
 
   initData = (date) => {
+    this.setState({
+      isLoading: true
+    })
     const url = !!date
       ? `/items?monthCategory=${date}&_sort=timestamp&_order=desc`
       : `/items?_sort=timestamp&_order=desc`
@@ -37,7 +43,8 @@ class Report extends Component {
       const [categories, items] = res
       this.setState({
         categories: categories.data,
-        items: items.data
+        items: items.data,
+        isLoading: false
       })
     }).catch(error => {
       console.log(error)
@@ -45,9 +52,13 @@ class Report extends Component {
   }
 
   getListByDate = (date) => {
+    this.setState({
+      isLoading: true
+    })
     axios.get(`/items?monthCategory=${date}&_sort=timestamp&_order=desc`).then(res => {
       this.setState({
-        items: res.data
+        items: res.data,
+        isLoading: false
       })
     }).catch(err => {
       console.log(err)
@@ -124,22 +135,33 @@ class Report extends Component {
 
   render() {
     const {type, onClickType} = this.props
-    const {dateString} = this.state
+    const {dateString, isLoading} = this.state
     const {chartData, totalOutcome, totalIncome} = this.handleChartData()
     const balance = totalIncome - totalOutcome
+    const isEmpty = chartData.length
     return (
       <Fragment>
         <Header type={type} onClickType={onClickType}/>
         <main className={'main-wrapper'}>
           <Calendar date={dateString} onChangeDate={this.onChangeDate}/>
           <ul className={'total-wrapper'}>
-            <li className={'total-outcome'} onClick={() => onClickType('outcome')}>{'-' + totalOutcome}</li>
-            <li className={'total-income'} onClick={() => onClickType('income')}>{'+' + totalIncome}</li>
+            <li className={`total-outcome ${isEmpty ? '' : 'empty'}`} onClick={() => onClickType('outcome')}>
+              {'-' + (isEmpty ? totalOutcome : '')}
+            </li>
+            <li className={`total-income ${isEmpty ? '' : 'empty'}`} onClick={() => onClickType('income')}>
+              {'+' + (isEmpty ? totalIncome : '')}
+            </li>
           </ul>
           <div className={'total'}>
-            <span className={`${balance < 0 ? 'deficit' : 'profit'}`}>{`共计: ${balance}`}</span>
+            <span className={`${balance < 0 ? 'deficit' : 'profit'} ${isEmpty ? '' : 'empty'}`}>
+              {`共计: ${(isEmpty ? balance : '')}`}
+            </span>
           </div>
-          <PieChart type={type} chartData={chartData}/>
+          {
+            isLoading
+              ? <Loading/>
+              : (isEmpty ? <PieChart type={type} chartData={chartData}/> : <EmptyData/>)
+          }
         </main>
       </Fragment>
     )

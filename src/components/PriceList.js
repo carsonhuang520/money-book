@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import PriceItem from './PriceItem'
 import withContext from '../withContext'
+import EmptyData from './EmptyData'
 
 class PriceList extends Component {
   constructor(props) {
@@ -20,9 +21,9 @@ class PriceList extends Component {
     return (
       <div className={'priceList-wrapper'}>
         {
-          times.length ? times.map(item => {
+          times.map(item => {
             return <PriceItem key={item} categories={categories} time={item} list={list[item]}/>
-          }) : '暂无记录'
+          })
         }
       </div>
     )

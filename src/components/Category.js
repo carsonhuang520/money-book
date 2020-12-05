@@ -3,6 +3,7 @@ import {withRouter} from 'react-router-dom'
 import withContext from '../withContext'
 import './Category.scss'
 import Icon from './Icon'
+import Loading from './Loading'
 
 class Category extends Component {
   constructor(props) {
@@ -18,33 +19,35 @@ class Category extends Component {
 
 
   render() {
-    const {currentItem, categories} = this.props
+    const {currentItem, categories, isLoading} = this.props
     return (
       <Fragment>
         <p className={'category-label'}>{'分类'}</p>
         <div className={'category-wrapper'}>
-          <ul className={'category-list'}>
-            {
-              categories.map((item) => {
-                return (item.name !== '编辑' ? (
-                  <li key={item.id} className={'category-item'} onClick={() => this.onClickItem(item)}>
-                    <div className={`category-item-content ${item.id === currentItem.id ? 'active' : ''}`}>
-                      <Icon name={item.iconName}/>
-                      <span className={'category-item-content-name'}>
+          {
+            isLoading ? <Loading/> : <ul className={'category-list'}>
+              {
+                categories.map((item) => {
+                  return (item.name !== '编辑' ? (
+                    <li key={item.id} className={'category-item'} onClick={() => this.onClickItem(item)}>
+                      <div className={`category-item-content ${item.id === currentItem.id ? 'active' : ''}`}>
+                        <Icon name={item.iconName}/>
+                        <span className={'category-item-content-name'}>
                     {item.name}
                   </span>
-                    </div>
-                  </li>) : (<li key={item.id} className={'category-item'} onClick={() => this.onClickItem(item)}>
-                  <div className={`category-item-edit ${item.id === currentItem.id ? 'active' : ''}`}>
+                      </div>
+                    </li>) : (<li key={item.id} className={'category-item'} onClick={() => this.onClickItem(item)}>
+                    <div className={`category-item-edit ${item.id === currentItem.id ? 'active' : ''}`}>
                       <span className={'category-item-content-name'}>
                         {item.name}
                       </span>
-                    <Icon name={item.iconName}/>
-                  </div>
-                </li>))
-              })
-            }
-          </ul>
+                      <Icon name={item.iconName}/>
+                    </div>
+                  </li>))
+                })
+              }
+            </ul>
+          }
         </div>
       </Fragment>
     )

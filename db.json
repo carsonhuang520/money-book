@@ -359,6 +359,15 @@
       "timestamp": 1607126400000,
       "monthCategory": "2020-12",
       "cid": "10"
+    },
+    {
+      "name": "交水费",
+      "date": "2020-12-05",
+      "price": 24,
+      "id": "_wf2akak5x",
+      "timestamp": 1607126400000,
+      "monthCategory": "2020-12",
+      "cid": "5"
     }
   ]
 }
