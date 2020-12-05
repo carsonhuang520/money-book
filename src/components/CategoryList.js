@@ -5,7 +5,6 @@ import {QuestionCircleOutlined} from '@ant-design/icons'
 import './CategoryList.scss'
 import Icon from './Icon'
 import withContext from '../withContext'
-import EmptyData from './EmptyData'
 
 class CategoryList extends Component {
   confirm(item) {

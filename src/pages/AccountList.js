@@ -1,5 +1,4 @@
 import React, {Component, Fragment} from 'react'
-import Header from '../components/Header'
 import PriceList from '../components/PriceList'
 import Calendar from '../components/Calendar'
 import withContext from '../withContext'
@@ -69,7 +68,6 @@ class AccountList extends Component {
   }
 
   render() {
-    const {type, onClickType, data} = this.props
     const {dateString, categories, items, isLoading} = this.state
     return (
       <Fragment>

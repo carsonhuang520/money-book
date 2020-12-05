@@ -2,12 +2,6 @@ import React, {Component} from 'react'
 import echarts from 'echarts'
 import withContext from '../withContext'
 
-let outcomeData = [{name: '吃饭', value: 200}, {name: '购物', value: 124},
-  {name: '电影', value: 20}, {name: '车票', value: 20}, {name: '娱乐', value: 200},
-  {name: '唱歌', value: 30}]
-
-let incomeData = [{name: '工资', value: 2000}, {name: '兼职', value: 300}, {name: '理财', value: 500}]
-
 class PieChart extends Component {
   constructor(props) {
     super(props)
@@ -18,18 +12,7 @@ class PieChart extends Component {
   }
 
   componentDidMount() {
-    const {type, data} = this.props
-    const {categories, items} = data
-    let categoriesFlattern = categories.reduce((prev, item) => {
-      prev[item.id] = item
-      return prev
-    }, {})
-    // let temp = items.forEach(item => {
-    //   if(!temp[categories[]])
-    // })
     let myChart = echarts.init(document.getElementById('pie-chart'))
-    let seriesData = type === 'outcome' ? outcomeData : incomeData
-    let legendData = seriesData.map(item => item.name)
     let option = {
       color: ['rgb(254,67,101)', 'rgb(252,157,154)',
         'rgb(249,205,173)', 'rgb(200,200,169)',
@@ -48,7 +31,7 @@ class PieChart extends Component {
         right: 10,
         top: 20,
         bottom: 20,
-        data: legendData,
+        data: [],
       },
       series: [
         {
@@ -56,7 +39,7 @@ class PieChart extends Component {
           type: 'pie',
           radius: '50%',
           center: ['50%', '50%'],
-          data: seriesData,
+          data: [],
           emphasis: {
             itemStyle: {
               shadowBlur: 10,

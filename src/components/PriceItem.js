@@ -1,12 +1,11 @@
-import React, {Component} from 'react'
+import React from 'react'
 import withContext from '../withContext'
 import './PriceList.scss'
 import Icon from './Icon'
 import {toThousandFilter} from '../utils'
 
 function PriceItem(props) {
-  const {time, list, data, categories} = props
-  // const {categories} = data
+  const {time, list, categories} = props
   const categoriesFlattern = categories.reduce((prev, item) => {
     prev[item.id] = item
     return prev

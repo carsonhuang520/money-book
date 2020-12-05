@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import PriceItem from './PriceItem'
 import withContext from '../withContext'
-import EmptyData from './EmptyData'
 
 class PriceList extends Component {
   constructor(props) {

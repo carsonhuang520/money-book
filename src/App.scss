@@ -1,0 +1,50 @@
+@import '~antd/dist/antd.css';
+@import './constants.scss';
+
+.App {
+  text-align: center;
+}
+
+.main-wrapper {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#pie-chart {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qrcode-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qrcode-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.qrcode-desc {
+  width: 100%;
+  background: $bgColor;
+  text-align: center;
+  padding: 4px 0;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.qrcode-wrapper > img {
+}

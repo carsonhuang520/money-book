@@ -1,5 +1,4 @@
-import './App.css'
-import React, {Component, Fragment, createContext} from 'react'
+import React, {Component, createContext} from 'react'
 import Nav from './components/Nav'
 import CreateAccount from './pages/CreateAccount'
 import AccountList from './pages/AccountList'
@@ -7,8 +6,8 @@ import Report from './pages/Report'
 import {Route, withRouter} from 'react-router-dom'
 import EditCategory from './pages/EditCategory'
 import CreateCategory from './pages/CreateCategory'
-import axios from 'axios'
-import {getYearAndMonth, ID, success} from './utils'
+import QrCode from './components/QrCode'
+import './App.scss'
 
 export const AppContext = createContext()
 
@@ -26,12 +25,27 @@ class App extends Component {
       type: 'outcome',
       navType: nav,
       categories: [],
-      items: []
+      items: [],
+      qrCodeVisible: false,
+      el: null
     }
-    this.actions = {
+    this.actions = {}
+  }
 
-
+  componentDidMount() {
+    if (document.documentElement.clientWidth > 500) {
+      this.setState({
+        qrCodeVisible: true
+      })
+      document.addEventListener('click', (e) => {
+        if (e.target.className === 'qrcode-mask') {
+          this.setState({
+            qrCodeVisible: false
+          })
+        }
+      })
     }
+
   }
 
   onClickType = (type) => {
@@ -47,7 +61,7 @@ class App extends Component {
   }
 
   render() {
-    const {type, navType} = this.state
+    const {type, navType, qrCodeVisible} = this.state
     return (
       <AppContext.Provider value={{state: this.state, actions: this.actions}}>
         <Route exact path="/" type={type}
@@ -60,6 +74,7 @@ class App extends Component {
                render={() => <EditCategory type={type} onClickType={this.onClickType}/>}/>
         <Route path="/addCategory" type={type}
                render={() => <CreateCategory type={type} onClickType={this.onClickType}/>}/>
+        {qrCodeVisible ? <QrCode/> : null}
         <Nav type={navType} onClickNav={this.onClickNav}/>
       </AppContext.Provider>
     )
