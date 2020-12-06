@@ -6,6 +6,7 @@ import {getYearAndMonth} from '../utils'
 import axios from 'axios'
 import EmptyData from '../components/EmptyData'
 import Loading from '../components/Loading'
+import {getCategories, getItems} from '../localStorage'
 
 class AccountList extends Component {
   constructor(props) {
@@ -27,18 +28,26 @@ class AccountList extends Component {
     this.setState({
       isLoading: true
     })
-    const url = `/items?monthCategory=${e}&_sort=timestamp&_order=desc`
-    const promises = [axios.get('/categories'), axios.get(url)]
-    Promise.all(promises).then(res => {
-      const [categories, items] = res
-      this.setState({
-        isLoading: false,
-        categories: categories.data,
-        items: items.data,
-      })
-    }).catch(error => {
-      console.log(error)
+    const items = getItems().filter(item => item.monthCategory.indexOf(e) >= 0)
+      .sort((a, b) => b.timestamp - a.timestamp)
+    const categories = getCategories()
+    this.setState({
+      isLoading: false,
+      categories: categories,
+      items: items,
     })
+    // const url = `/items?monthCategory=${e}&_sort=timestamp&_order=desc`
+    // const promises = [axios.get('/categories'), axios.get(url)]
+    // Promise.all(promises).then(res => {
+    //   const [categories, items] = res
+    //   this.setState({
+    //     isLoading: false,
+    //     categories: categories.data,
+    //     items: items.data,
+    //   })
+    // }).catch(error => {
+    //   console.log(error)
+    // })
   }
 
   onChangeDate = (date) => {
@@ -52,14 +61,20 @@ class AccountList extends Component {
     this.setState({
       isLoading: true
     })
-    axios.get(`/items?monthCategory=${date}&_sort=timestamp&_order=desc`).then(res => {
-      this.setState({
-        items: res.data,
-        isLoading: false
-      })
-    }).catch(err => {
-      console.log(err)
+    const items = getItems().filter(item => item.monthCategory.indexOf(date) >= 0)
+      .sort((a, b) => b.timestamp - a.timestamp)
+    this.setState({
+      isLoading: false,
+      items: items,
     })
+    // axios.get(`/items?monthCategory=${date}&_sort=timestamp&_order=desc`).then(res => {
+    //   this.setState({
+    //     items: res.data,
+    //     isLoading: false
+    //   })
+    // }).catch(err => {
+    //   console.log(err)
+    // })
   }
 
   render() {

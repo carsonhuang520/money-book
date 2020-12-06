@@ -4,6 +4,7 @@ import CategoryList from '../components/CategoryList'
 import axios from 'axios'
 import Loading from '../components/Loading'
 import {success} from '../utils'
+import {getCategories, setCategories} from '../localStorage'
 
 class EditCategory extends Component {
   constructor(props) {
@@ -22,33 +23,45 @@ class EditCategory extends Component {
     this.setState({
       isLoading: true
     })
-    axios.get('/categories').then(res => {
-      this.setState({
-        categories: res.data,
-        isLoading: false
-      })
-    }).catch(error => {
-      console.log(error)
+    const categories = getCategories()
+    this.setState({
+      categories: categories,
+      isLoading: false
     })
+    // axios.get('/categories').then(res => {
+    //   this.setState({
+    //     categories: res.data,
+    //     isLoading: false
+    //   })
+    // }).catch(error => {
+    //   console.log(error)
+    // })
   }
 
   onDeleteCategory = (item) => {
     this.setState({
       isLoading: true
     })
-    axios.delete(`/categories/${item.id}`).then(() => {
-      const newCategories = this.state.categories.filter(e => e.id !== item.id)
-      success('删除成功!')
-      this.setState({
-        categories: newCategories,
-        isLoading: false,
-      })
-    }).catch(error => {
-      this.setState({
-        isLoading: false
-      })
-      console.log(error)
+    const newCategories = this.state.categories.filter(e => e.id !== item.id)
+    setCategories(newCategories)
+    success('删除成功!')
+    this.setState({
+      categories: newCategories,
+      isLoading: false,
     })
+    // axios.delete(`/categories/${item.id}`).then(() => {
+    //   const newCategories = this.state.categories.filter(e => e.id !== item.id)
+    //   success('删除成功!')
+    //   this.setState({
+    //     categories: newCategories,
+    //     isLoading: false,
+    //   })
+    // }).catch(error => {
+    //   this.setState({
+    //     isLoading: false
+    //   })
+    //   console.log(error)
+    // })
   }
 
   render() {

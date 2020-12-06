@@ -8,6 +8,7 @@ import EditCategory from './pages/EditCategory'
 import CreateCategory from './pages/CreateCategory'
 import QrCode from './components/QrCode'
 import './App.scss'
+import {setCategories, setItems, setNewCategory} from './localStorage'
 
 export const AppContext = createContext()
 
@@ -15,6 +16,9 @@ class App extends Component {
   constructor(props) {
     super(props)
     let nav = this.getNav()
+    setItems()
+    setCategories()
+    setNewCategory()
     this.state = {
       type: 'outcome',
       navType: nav,

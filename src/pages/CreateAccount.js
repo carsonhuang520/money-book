@@ -4,6 +4,7 @@ import RecordForm from '../components/RecordForm'
 import withContext from '../withContext'
 import {ID, success} from '../utils'
 import axios from 'axios'
+import {getCategories, getItems, setItems} from '../localStorage'
 
 class CreateAccount extends Component {
   constructor(props) {
@@ -23,14 +24,19 @@ class CreateAccount extends Component {
     this.setState({
       isLoading: true
     })
-    axios.get('/categories').then(res => {
-      this.setState({
-        categories: res.data,
-        isLoading: false
-      })
-    }).catch(error => {
-      console.log(error)
+    const categories = getCategories()
+    this.setState({
+      categories: categories,
+      isLoading: false
     })
+    // axios.get('/categories').then(res => {
+    //   this.setState({
+    //     categories: res.data,
+    //     isLoading: false
+    //   })
+    // }).catch(error => {
+    //   console.log(error)
+    // })
   }
 
   createItem = (item, category) => {
@@ -38,12 +44,20 @@ class CreateAccount extends Component {
       isBtnLoading: true
     })
     const newItem = this.getNewItem(item, category)
-    axios.post(`/items`, newItem).then(() => {
-      this.setState({
-        isBtnLoading: false
-      })
-      success('已保存')
+    const items = getItems()
+    const newItems = JSON.parse(JSON.stringify(items))
+    newItems.push(newItem)
+    setItems(newItems)
+    this.setState({
+      isBtnLoading: false
     })
+    success('已保存')
+    // axios.post(`/items`, newItem).then(() => {
+    //   this.setState({
+    //     isBtnLoading: false
+    //   })
+    //   success('已保存')
+    // })
   }
 
   getNewItem = (item, category) => {
