@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/money-book/static/css/main.6c2ea472.chunk.css",
-    "main.js": "/money-book/static/js/main.0a4f4ade.chunk.js",
-    "main.js.map": "/money-book/static/js/main.0a4f4ade.chunk.js.map",
+    "main.js": "/money-book/static/js/main.ae4ae82e.chunk.js",
+    "main.js.map": "/money-book/static/js/main.ae4ae82e.chunk.js.map",
     "runtime-main.js": "/money-book/static/js/runtime-main.3af74fd4.js",
     "runtime-main.js.map": "/money-book/static/js/runtime-main.3af74fd4.js.map",
     "static/css/2.2756993b.chunk.css": "/money-book/static/css/2.2756993b.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.2756993b.chunk.css",
     "static/js/2.faa42df0.chunk.js",
     "static/css/main.6c2ea472.chunk.css",
-    "static/js/main.0a4f4ade.chunk.js"
+    "static/js/main.ae4ae82e.chunk.js"
   ]
 }
