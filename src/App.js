@@ -14,13 +14,7 @@ export const AppContext = createContext()
 class App extends Component {
   constructor(props) {
     super(props)
-    const pathname = this.props.history.location.pathname
-    let nav = 'jizhang'
-    if (pathname === '/report') {
-      nav = 'report'
-    } else if (pathname === '/list') {
-      nav = 'detail'
-    }
+    let nav = this.getNav()
     this.state = {
       type: 'outcome',
       navType: nav,
@@ -30,6 +24,17 @@ class App extends Component {
       el: null
     }
     this.actions = {}
+  }
+
+  getNav = () => {
+    const pathname = this.props.history.location.pathname
+    let nav = 'jizhang'
+    if (pathname === '/report') {
+      nav = 'report'
+    } else if (pathname === '/list') {
+      nav = 'detail'
+    }
+    return nav
   }
 
   componentDidMount() {

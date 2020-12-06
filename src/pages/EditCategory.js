@@ -54,6 +54,7 @@ class EditCategory extends Component {
   render() {
     const {type, onClickType} = this.props
     const {categories, isLoading} = this.state
+    const categoriesFilter = categories.filter(item => item.type === type && item.name !== '编辑')
     return (
       <Fragment>
         <Header type={type} onClickType={onClickType}/>
@@ -61,7 +62,7 @@ class EditCategory extends Component {
           {
             isLoading
               ? <Loading/>
-              : <CategoryList type={type} categories={categories} onDeleteCategory={this.onDeleteCategory}/>
+              : <CategoryList type={type} categories={categoriesFilter} onDeleteCategory={this.onDeleteCategory}/>
           }
         </main>
       </Fragment>

@@ -14,15 +14,23 @@ class CategoryForm extends Component {
 
   onCreateCategory = () => {
     const {name, current} = this.state
-    if (name === '') {
-      confirm('类别名称不能为空!')
-      return
-    }
-    if (Object.keys(current).length === 0) {
-      confirm('请选择一个类别图标!')
+    const isValid = this.validateForm(name, current)
+    if (!isValid) {
       return
     }
     this.props.onCreateCategory({name, current})
+  }
+
+  validateForm = (name, current) => {
+    if (name === '') {
+      confirm('类别名称不能为空!')
+      return false
+    }
+    if (Object.keys(current).length === 0) {
+      confirm('请选择一个类别图标!')
+      return false
+    }
+    return true
   }
 
   onNameChange = (e) => {

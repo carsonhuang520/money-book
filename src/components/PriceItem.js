@@ -1,19 +1,12 @@
 import React from 'react'
-import withContext from '../withContext'
 import './PriceList.scss'
 import Icon from './Icon'
-import {toThousandFilter} from '../utils'
+import {flatternCategory, getTotal, toThousandFilter} from '../utils'
 
 function PriceItem(props) {
   const {time, list, categories} = props
-  const categoriesFlattern = categories.reduce((prev, item) => {
-    prev[item.id] = item
-    return prev
-  }, {})
-  const total = list.reduce((prev, cur) => {
-    prev = prev + (categoriesFlattern[cur.cid].type === 'outcome' ? -1 * cur.price : cur.price)
-    return prev
-  }, 0)
+  const categoriesFlattern = flatternCategory(categories)
+  const total = getTotal(list, categoriesFlattern)
   return (
     <div className={'priceItem-wrapper'}>
       <h3 className={'priceItem-header'}>
@@ -42,4 +35,4 @@ function PriceItem(props) {
   )
 }
 
-export default withContext(PriceItem)
+export default PriceItem

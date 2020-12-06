@@ -99,7 +99,7 @@
     {
       "name": "其他",
       "iconName": "qita",
-      "id": "1000",
+      "id": "1001",
       "type": "income"
     },
     {
@@ -380,6 +380,69 @@
       "timestamp": 1607126400000,
       "monthCategory": "2020-12",
       "cid": "5"
+    },
+    {
+      "name": "吃饭",
+      "date": "2020-12-04",
+      "price": 200,
+      "id": "_bxwa6nl7d",
+      "timestamp": 1607040000000,
+      "monthCategory": "2020-12",
+      "cid": "1"
+    },
+    {
+      "name": "买书",
+      "date": "2020-12-06",
+      "price": 120,
+      "id": "_4mxjunwaa",
+      "timestamp": 1607212800000,
+      "monthCategory": "2020-12",
+      "cid": "9"
+    },
+    {
+      "name": "理财",
+      "date": "2020-12-06",
+      "price": 100,
+      "id": "_7ila18s8u",
+      "timestamp": 1607212800000,
+      "monthCategory": "2020-12",
+      "cid": "14"
+    },
+    {
+      "name": "其他",
+      "date": "2020-12-06",
+      "price": 12,
+      "id": "_kysehaxx6",
+      "timestamp": 1607212800000,
+      "monthCategory": "2020-12",
+      "cid": "1000"
+    },
+    {
+      "name": "测试其他",
+      "date": "2020-12-06",
+      "price": 22,
+      "id": "_o8369pktd",
+      "timestamp": 1607212800000,
+      "monthCategory": "2020-12",
+      "cid": "1000"
+    },
+    {
+      "name": "再次测试",
+      "date": "2020-12-06",
+      "price": 2,
+      "id": "_6uxd1gzop",
+      "timestamp": 1607212800000,
+      "monthCategory": "2020-12",
+      "cid": "1000"
+    },
+    {
+      "name": "三次测试",
+      "date": "2020-12-06",
+      "price": 22,
+      "id": "_qjxffl0fb",
+      "timestamp": 1607212800000,
+      "monthCategory": "2020-12",
+      "cid": "1001"
     }
   ]
 }

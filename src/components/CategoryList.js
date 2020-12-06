@@ -1,35 +1,17 @@
 import React, {Component} from 'react'
-import {Modal} from 'antd'
 import {withRouter} from 'react-router-dom'
-import {QuestionCircleOutlined} from '@ant-design/icons'
 import './CategoryList.scss'
 import Icon from './Icon'
 import withContext from '../withContext'
+import {confirm} from '../utils'
 
 class CategoryList extends Component {
-  confirm(item) {
-    Modal.confirm({
-      title: '确定要删除该标签吗？',
-      centered: true,
-      icon: <QuestionCircleOutlined/>,
-      okText: '确认',
-      cancelText: '取消',
-      onOk: () => this.onDeleteCategory(item)
-    })
-  }
-
-  onDeleteCategory = (item) => {
-    this.props.onDeleteCategory(item)
-    console.log(item)
-  }
-
   toAddCategory = () => {
     this.props.history.push('/addCategory')
   }
 
   render() {
-    let {type, categories} = this.props
-    categories = categories.filter(item => item.type === type && item.name !== '编辑')
+    let {categories, onDeleteCategory} = this.props
     const isEmpty = categories.length
     return (
       <div className={'categoryList-wrapper'}>
@@ -45,7 +27,7 @@ class CategoryList extends Component {
                   <Icon name={item.iconName}/>
                   <span>{item.name}</span>
                 </span>
-                <span onClick={() => this.confirm(item)}>
+                <span onClick={() => confirm('确定要删除该标签吗？', () => onDeleteCategory(item))}>
                   <Icon name={'delete'}/>
                 </span>
               </li>)

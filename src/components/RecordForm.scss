@@ -69,5 +69,11 @@
     border-color: $bgColor;
     color: #ffffff;
     font-weight: 700;
+
+    &:focus, &:active, &:hover {
+      background: $bgColor;
+      border-color: $bgColor;
+      color: #ffffff;
+    }
   }
 }

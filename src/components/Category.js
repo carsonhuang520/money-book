@@ -1,6 +1,5 @@
 import React, {Component, Fragment} from 'react'
 import {withRouter} from 'react-router-dom'
-import withContext from '../withContext'
 import './Category.scss'
 import Icon from './Icon'
 import Loading from './Loading'
@@ -16,7 +15,6 @@ class Category extends Component {
     }
     this.props.onClickItem(item)
   }
-
 
   render() {
     const {currentItem, categories, isLoading} = this.props
@@ -55,4 +53,4 @@ class Category extends Component {
 
 }
 
-export default withRouter(withContext(Category))
+export default withRouter(Category)

@@ -9,7 +9,6 @@ class CreateAccount extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      items: [],
       categories: [],
       isLoading: false,
       isBtnLoading: false
@@ -20,22 +19,13 @@ class CreateAccount extends Component {
     this.initData()
   }
 
-  initData = (dateString) => {
+  initData = () => {
     this.setState({
       isLoading: true
     })
-    const url = !!dateString
-      ? `/items?monthCategory=${dateString}&_sort=timestamp&_order=desc`
-      : `/items?_sort=timestamp&_order=desc`
-    const promiseArray = [
-      axios.get('/categories'),
-      axios.get(url)
-    ]
-    Promise.all(promiseArray).then(res => {
-      const [categories, items] = res
+    axios.get('/categories').then(res => {
       this.setState({
-        categories: categories.data,
-        items: items.data,
+        categories: res.data,
         isLoading: false
       })
     }).catch(error => {
@@ -47,39 +37,42 @@ class CreateAccount extends Component {
     this.setState({
       isBtnLoading: true
     })
-    const newId = ID()
-    const {date, name, money} = item
-    item.monthCategory = date.substring(0, date.lastIndexOf('-'))
-    item.timestamp = new Date(date).getTime()
-    const newItem = {
-      name,
-      date,
-      price: parseInt(money),
-      id: newId,
-      timestamp: item.timestamp,
-      monthCategory: item.monthCategory,
-      cid: category.id
-    }
+    const newItem = this.getNewItem(item, category)
     axios.post(`/items`, newItem).then(() => {
-      const newItems = JSON.parse(JSON.stringify(this.state.items))
-      newItems.push(newItem)
       this.setState({
-        items: newItems,
         isBtnLoading: false
       })
       success('已保存')
     })
   }
 
+  getNewItem = (item, category) => {
+    const newId = ID()
+    const {date, name, money} = item
+    const monthCategory = date.substring(0, date.lastIndexOf('-'))
+    const timestamp = new Date(date).getTime()
+    const newItem = {
+      name,
+      date,
+      price: parseInt(money),
+      id: newId,
+      timestamp,
+      monthCategory,
+      cid: category.id
+    }
+    return newItem
+  }
+
   render() {
     const {type, onClickType} = this.props
     const {categories, isLoading, isBtnLoading} = this.state
+    const categoriesFilter = categories.filter(item => item.type === type)
     return (
       <Fragment>
         <Header type={type} onClickType={onClickType}/>
         <main className={'main-wrapper'}>
           <RecordForm createItem={this.createItem}
-                      categories={categories}
+                      categories={categoriesFilter}
                       type={type}
                       isLoading={isLoading}
                       isBtnLoading={isBtnLoading}

@@ -5,7 +5,6 @@ import Category from './Category'
 import moment from 'moment'
 import './RecordForm.scss'
 import {getYearAndMonth, toThousandFilter, confirm} from '../utils'
-import withContext from '../withContext'
 
 const dateFormat = 'YYYY-MM-DD'
 
@@ -53,21 +52,8 @@ class RecordForm extends Component {
 
   onCreateAccount = () => {
     const {date, name, money, category} = this.state
-    const {type} = this.props
-    if (date === '') {
-      confirm('日期不能为空!')
-      return
-    }
-    if (name === '') {
-      confirm('备注不能为空!')
-      return
-    }
-    if (money === '0') {
-      confirm('金额必须要大于0!')
-      return
-    }
-    if (Object.keys(category).length === 0) {
-      confirm('请选择一个类别!')
+    const isValidate = this.validateForm()
+    if (!isValidate) {
       return
     }
     const info = {
@@ -77,6 +63,27 @@ class RecordForm extends Component {
     }
     this.props.createItem(info, category)
   }
+  validateForm = () => {
+    const {date, name, money, category} = this.state
+    if (date === '') {
+      confirm('日期不能为空!')
+      return false
+    }
+    if (name === '') {
+      confirm('备注不能为空!')
+      return false
+    }
+    if (money === '0') {
+      confirm('金额必须要大于0!')
+      return false
+    }
+    if (Object.keys(category).length === 0) {
+      confirm('请选择一个类别!')
+      return false
+    }
+    return true
+  }
+
   onClickItem = (item) => {
     this.setState({
       category: item
@@ -86,7 +93,6 @@ class RecordForm extends Component {
   render() {
     let {type, categories, isLoading, isBtnLoading} = this.props
     const {date, name, money, category} = this.state
-    categories = categories.filter(item => item.type === type)
     return (
       <Fragment>
         <div className={'form-wrapper'}>
@@ -131,4 +137,4 @@ class RecordForm extends Component {
   }
 }
 
-export default withContext(RecordForm)
+export default RecordForm

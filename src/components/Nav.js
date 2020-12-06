@@ -4,11 +4,6 @@ import {withRouter} from 'react-router-dom'
 import Icon from './Icon'
 
 class Nav extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
-
   onClickNav = (e, type) => {
     e.preventDefault()
     if (type === 'jizhang') {
@@ -25,15 +20,15 @@ class Nav extends Component {
     const {type} = this.props
     return (
       <nav className={'nav-wrapper'}>
-        <a className={`${type === 'jizhang' ? 'active' : ''}`} href={'#'}
+        <a className={`${type === 'jizhang' ? 'active' : ''}`} href={'/'}
            onClick={(e) => this.onClickNav(e, 'jizhang')}>
           <Icon name={'jizhang'}/>
           <span>记账</span></a>
-        <a className={`${type === 'detail' ? 'active' : ''}`} href={'#'}
+        <a className={`${type === 'detail' ? 'active' : ''}`} href={'/'}
            onClick={(e) => this.onClickNav(e, 'detail')}>
           <Icon name={'mingxi'}/>
           <span>明细</span></a>
-        <a className={`${type === 'report' ? 'active' : ''}`} href={'#'}
+        <a className={`${type === 'report' ? 'active' : ''}`} href={'/'}
            onClick={(e) => this.onClickNav(e, 'report')}>
           <Icon name={'baogao'}/>
           <span>报告</span></a>

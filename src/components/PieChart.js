@@ -57,8 +57,7 @@ class PieChart extends Component {
     })
   }
 
-  changeData(data) {
-    const {option, myChart} = this.state
+  changeData = (data, myChart, option) => {
     const legendData = data.map(item => item.name)
     let temp = JSON.parse(JSON.stringify(option))
     temp.legend.data = legendData
@@ -70,7 +69,7 @@ class PieChart extends Component {
     const {myChart, option} = this.state
     const {chartData} = this.props
     if (myChart !== null && option !== null) {
-      this.changeData(chartData)
+      this.changeData(chartData, myChart, option)
     }
     return (
       <div

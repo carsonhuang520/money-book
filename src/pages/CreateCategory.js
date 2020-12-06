@@ -37,7 +37,16 @@ class CreateCategory extends Component {
   }
 
   onCreateCategory = ({name, current}) => {
-    console.log(name, current)
+    const newItem = this.getNewItem({name, current})
+    axios.post('/categories', newItem).then(() => {
+      success('添加成功!')
+      this.props.history.push('/editCategory')
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
+  getNewItem = ({name, current}) => {
     const {type} = this.props
     const id = ID()
     const newItem = {
@@ -46,12 +55,7 @@ class CreateCategory extends Component {
       type,
       iconName: current.name
     }
-    axios.post('/categories', newItem).then(() => {
-      success('添加成功!')
-      this.props.history.push('/editCategory')
-    }).catch(error => {
-      console.log(error)
-    })
+    return newItem
   }
 
   render() {

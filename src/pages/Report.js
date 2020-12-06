@@ -2,10 +2,9 @@ import React, {Fragment, Component} from 'react'
 import Header from '../components/Header'
 import Calendar from '../components/Calendar'
 import PieChart from '../components/PieChart'
-import withContext from '../withContext'
 import './Report.scss'
 import {withRouter} from 'react-router-dom'
-import {getYearAndMonth, toThousandFilter} from '../utils'
+import {flatternCategory, flatternItemsByType, getYearAndMonth, toThousandFilter} from '../utils'
 import axios from 'axios'
 import EmptyData from '../components/EmptyData'
 import Loading from '../components/Loading'
@@ -32,9 +31,7 @@ class Report extends Component {
     this.setState({
       isLoading: true
     })
-    const url = !!date
-      ? `/items?monthCategory=${date}&_sort=timestamp&_order=desc`
-      : `/items?_sort=timestamp&_order=desc`
+    const url = `/items?monthCategory=${date}&_sort=timestamp&_order=desc`
     const promiseArray = [
       axios.get('/categories'),
       axios.get(url)
@@ -72,59 +69,39 @@ class Report extends Component {
     this.getListByDate(date)
   }
 
-  handleChartData() {
-    const {type} = this.props
-    const {categories, items} = this.state
-    let categoriesFlattern = categories.reduce((prev, item) => {
-      prev[item.id] = item
-      return prev
-    }, {})
-    let itemsFlattern = items.reduce((prev, item) => {
-      const name = categoriesFlattern[item.cid].name
-      const cType = categoriesFlattern[item.cid].type
-      if (!prev[cType]) {
-        prev[cType] = {}
+  getChartData = (type, itemsFlattern) => {
+    return Object.keys(itemsFlattern[type]).map(item => {
+      const price = itemsFlattern[type][item].reduce((prev, e) => {
+        prev += e.price
+        return prev
+      }, 0)
+      return {
+        name: item,
+        value: price
       }
-      if (!prev[cType][name]) {
-        prev[cType][name] = []
-      }
-      prev[cType][name].push(item)
+    })
+  }
+
+  getTotalResult = (items) => {
+    return items.reduce((prev, item) => {
+      prev += item.value
       return prev
-    }, {})
+    }, 0)
+  }
+
+  handleChartData(categories, items, type) {
+    let categoriesFlattern = flatternCategory(categories)
+    let itemsFlattern = flatternItemsByType(items, categoriesFlattern)
     const keys = Object.keys(itemsFlattern)
     let outcome = []
     let income = []
     let totalIncome = 0
     let totalOutcome = 0
     if (keys.length) {
-      outcome = itemsFlattern['outcome'] ? Object.keys(itemsFlattern['outcome']).map(item => {
-        const price = itemsFlattern['outcome'][item].reduce((prev, e) => {
-          prev += e.price
-          return prev
-        }, 0)
-        return {
-          name: item,
-          value: price
-        }
-      }) : []
-      income = itemsFlattern['income'] ? Object.keys(itemsFlattern['income']).map(item => {
-        const price = itemsFlattern['income'][item].reduce((prev, e) => {
-          prev += e.price
-          return prev
-        }, 0)
-        return {
-          name: item,
-          value: price
-        }
-      }) : []
-      totalOutcome = outcome.reduce((prev, item) => {
-        prev += item.value
-        return prev
-      }, 0)
-      totalIncome = income.reduce((prev, item) => {
-        prev += item.value
-        return prev
-      }, 0)
+      outcome = itemsFlattern['outcome'] ? this.getChartData('outcome', itemsFlattern) : []
+      income = itemsFlattern['income'] ? this.getChartData('income', itemsFlattern) : []
+      totalOutcome = this.getTotalResult(outcome)
+      totalIncome = this.getTotalResult(income)
     }
     if (type === 'outcome') {
       return {chartData: outcome, totalIncome, totalOutcome}
@@ -135,8 +112,8 @@ class Report extends Component {
 
   render() {
     const {type, onClickType} = this.props
-    const {dateString, isLoading} = this.state
-    const {chartData, totalOutcome, totalIncome} = this.handleChartData()
+    const {dateString, isLoading, categories, items} = this.state
+    const {chartData, totalOutcome, totalIncome} = this.handleChartData(categories, items, type)
     const balance = totalIncome - totalOutcome
     const isEmpty = chartData.length
     return (
@@ -168,4 +145,4 @@ class Report extends Component {
   }
 }
 
-export default withRouter(withContext(Report))
+export default withRouter(Report)

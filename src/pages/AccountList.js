@@ -20,26 +20,21 @@ class AccountList extends Component {
 
   componentDidMount() {
     const {dateString} = this.state
-    this.initData(dateString)
+    this.initListData(dateString)
   }
 
-  initData = (date) => {
+  initListData = (e) => {
     this.setState({
       isLoading: true
     })
-    const url = !!date
-      ? `/items?monthCategory=${date}&_sort=timestamp&_order=desc`
-      : `/items?_sort=timestamp&_order=desc`
-    const promiseArray = [
-      axios.get('/categories'),
-      axios.get(url)
-    ]
-    Promise.all(promiseArray).then(res => {
+    const url = `/items?monthCategory=${e}&_sort=timestamp&_order=desc`
+    const promises = [axios.get('/categories'), axios.get(url)]
+    Promise.all(promises).then(res => {
       const [categories, items] = res
       this.setState({
+        isLoading: false,
         categories: categories.data,
         items: items.data,
-        isLoading: false
       })
     }).catch(error => {
       console.log(error)

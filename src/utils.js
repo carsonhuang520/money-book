@@ -17,13 +17,15 @@ export const getYearAndMonth = (type) => {
     : year + '-' + (month >= 10 ? month : '0' + month)
 }
 
-export const confirm = (title) => {
+export const confirm = (title, okFn) => {
   Modal.confirm({
     title: title,
     centered: true,
     icon: <QuestionCircleOutlined/>,
     okText: '确认',
-    cancelText: '取消'
+    cancelText: '取消',
+    onOk: okFn ? okFn : () => {
+    }
   })
 }
 
@@ -36,4 +38,44 @@ export const ID = () => {
   // Convert it to base 36 (numbers + letters), and grab the first 9 characters
   // after the decimal.
   return '_' + Math.random().toString(36).substr(2, 9)
+}
+
+export const flatternCategory = (categories) => {
+  return categories.reduce((prev, item) => {
+    prev[item.id] = item
+    return prev
+  }, {})
+}
+
+export const flatternItems = (items) => {
+  let list = {}
+  items.forEach(item => {
+    if (!list[item.date]) {
+      list[item.date] = []
+    }
+    list[item.date].push(item)
+  })
+  return list
+}
+
+export const flatternItemsByType = (items, categoriesFlattern) => {
+  return items.reduce((prev, item) => {
+    const name = categoriesFlattern[item.cid].name
+    const cType = categoriesFlattern[item.cid].type
+    if (!prev[cType]) {
+      prev[cType] = {}
+    }
+    if (!prev[cType][name]) {
+      prev[cType][name] = []
+    }
+    prev[cType][name].push(item)
+    return prev
+  }, {})
+}
+
+export const getTotal = (list, categoriesFlattern) => {
+  return list.reduce((prev, cur) => {
+    prev = prev + (categoriesFlattern[cur.cid].type === 'outcome' ? -1 * cur.price : cur.price)
+    return prev
+  }, 0)
 }
