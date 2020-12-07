@@ -31,8 +31,8 @@ class Category extends Component {
                       <div className={`category-item-content ${item.id === currentItem.id ? 'active' : ''}`}>
                         <Icon name={item.iconName}/>
                         <span className={'category-item-content-name'}>
-                    {item.name}
-                  </span>
+                          {item.name}
+                        </span>
                       </div>
                     </li>) : (<li key={item.id} className={'category-item'} onClick={() => this.onClickItem(item)}>
                     <div className={`category-item-edit ${item.id === currentItem.id ? 'active' : ''}`}>

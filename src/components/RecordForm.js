@@ -120,7 +120,7 @@ class RecordForm extends Component {
               </div>
             </li>
             <li className={'form-item'}>
-              <Category type={type} currentItem={category} isLoading={isLoading} categories={categories}
+              <Category currentItem={category} isLoading={isLoading} categories={categories}
                         onClickItem={this.onClickItem}/>
             </li>
           </ul>
