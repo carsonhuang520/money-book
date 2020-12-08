@@ -35,7 +35,7 @@ class App extends Component {
     let nav = 'jizhang'
     if (pathname === '/report') {
       nav = 'report'
-    } else if (pathname === ' p/list') {
+    } else if (pathname === '/list') {
       nav = 'detail'
     }
     return nav

@@ -34,15 +34,53 @@
     .priceItem-item {
       min-height: 45px;
       padding: 10px 12px 10px 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      //display: flex;
+      //justify-content: space-between;
+      //align-items: center;
       border-bottom: 1px solid $borderColor;
+      position: relative;
+      overflow: hidden;
+      transition: all 300ms linear;
 
-      > span {
-        display: flex;
-        align-items: center;
+      &.active {
+        transform: translateX(-40px);
       }
+
+      &-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 300ms linear;
+
+        > span {
+          display: flex;
+          align-items: center;
+        }
+
+        &.active {
+          transform: translateX(-60px);
+        }
+      }
+
+      &-del {
+        width: 60px;
+        height: 100%;
+        padding: 0 10px;
+        background: #ff4d4f;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #ffffff;
+        position: absolute;
+        top: 0;
+        right: -61px;
+        transition: all 300ms linear;
+
+        &.active {
+          transform: translateX(-60px);
+        }
+      }
+
 
       svg {
         width: 18px;

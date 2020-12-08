@@ -2,11 +2,11 @@ import React, {Component, Fragment} from 'react'
 import PriceList from '../components/PriceList'
 import Calendar from '../components/Calendar'
 import withContext from '../withContext'
-import {getYearAndMonth} from '../utils'
+import {getYearAndMonth, success} from '../utils'
 import axios from 'axios'
 import EmptyData from '../components/EmptyData'
 import Loading from '../components/Loading'
-import {getCategories, getItems} from '../localStorage'
+import {getCategories, getItems, setItems} from '../localStorage'
 
 class AccountList extends Component {
   constructor(props) {
@@ -77,6 +77,20 @@ class AccountList extends Component {
     // })
   }
 
+  onDeleteItem(delItem) {
+    this.setState({
+      isLoading: true
+    })
+    const {items} = this.state
+    const newItems = items.filter(item => item.id !== delItem.id)
+    setItems(newItems)
+    success('删除成功!')
+    this.setState({
+      isLoading: false,
+      items: newItems,
+    })
+  }
+
   render() {
     const {dateString, categories, items, isLoading} = this.state
     return (
@@ -87,7 +101,11 @@ class AccountList extends Component {
           {
             isLoading
               ? <Loading/>
-              : (items.length ? <PriceList categories={categories} items={items}/> : <EmptyData/>)
+              : (items.length ?
+              <PriceList categories={categories} items={items}
+                         onDeleteItem={(item) => this.onDeleteItem(item)}
+              /> :
+              <EmptyData/>)
           }
         </main>
       </Fragment>
