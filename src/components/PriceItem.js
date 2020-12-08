@@ -73,11 +73,11 @@ class PriceItem extends Component {
           {
             list.map((item, index) => {
               return (
-                <li key={item.id} className={`priceItem-item`}
+                <li key={item.id} className={`priceItem-item ${isClick && current === index ? 'active' : ''}`}
                     onTouchStart={(e) => this.onTouchStart(e)}
                     onTouchEnd={(e) => this.onTouchEnd(e, index)}
                     onClick={(e) => this.onLiClick(e)}>
-                  <div className={`priceItem-item-content ${isClick && current === index ? 'active' : ''}`}>
+                  <div className={`priceItem-item-content`}>
                     <span>
                       <Icon name={categoriesFlattern[item.cid].iconName}/>
                       <span>{item.name}</span>
@@ -86,7 +86,7 @@ class PriceItem extends Component {
                       {(categoriesFlattern[item.cid].type === 'outcome' ? '-' : '+') + toThousandFilter(item.price)}
                     </span>
                   </div>
-                  <div className={`priceItem-item-del ${isClick && current === index ? 'active' : ''}`}
+                  <div className={`priceItem-item-del`}
                        onClick={() => confirm('确定要删除该条记录吗？', () => onDeleteItem(item))}
                   >
                     删除
