@@ -5,6 +5,9 @@ import Category from './Category'
 import moment from 'moment'
 import './RecordForm.scss'
 import {getYearAndMonth, toThousandFilter, confirm} from '../utils'
+import 'moment/locale/zh-cn'
+
+moment.locale('zh-cn')
 
 const dateFormat = 'YYYY-MM-DD'
 
@@ -128,8 +131,8 @@ class RecordForm extends Component {
         <div className={'button-wrapper'}>
           {
             !isBtnLoading
-              ? <Button shape="round" className={'btn-create'} onClick={this.onCreateAccount}>记一笔</Button>
-              : <Button shape="round" className={'btn-create'} loading>加载中</Button>
+              ? <Button shape="round" className={'btn-create'} type={'primary'} onClick={this.onCreateAccount}>记一笔</Button>
+              : <Button shape="round" className={'btn-create'} type={'primary'} loading>加载中</Button>
           }
         </div>
       </Fragment>

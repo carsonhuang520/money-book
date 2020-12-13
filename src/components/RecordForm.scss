@@ -37,10 +37,6 @@
       &-input {
         width: 250px;
 
-        &:hover, &:focus {
-          border-color: $bgColor;
-        }
-
         &.money {
           background: #bbe9ff;
 
@@ -65,15 +61,7 @@
   .btn-create {
     height: 40px;
     width: 80%;
-    background: $bgColor;
-    border-color: $bgColor;
-    color: #ffffff;
     font-weight: 700;
 
-    &:focus, &:active, &:hover {
-      background: $bgColor;
-      border-color: $bgColor;
-      color: #ffffff;
-    }
   }
 }

@@ -9,6 +9,7 @@ import axios from 'axios'
 import EmptyData from '../components/EmptyData'
 import Loading from '../components/Loading'
 import {getCategories, getItems} from '../localStorage'
+import {Modal} from 'antd'
 
 class Report extends Component {
   constructor(props) {
@@ -125,6 +126,20 @@ class Report extends Component {
     }
   }
 
+  notice(balance) {
+    if (balance < 0) {
+      Modal.warning({
+        content: '注意收支平衡哦~~~',
+        centered: true
+      })
+    } else {
+      Modal.success({
+        content: '攒钱高手~~~',
+        centered: true
+      })
+    }
+  }
+
   render() {
     const {type, onClickType} = this.props
     const {dateString, isLoading, categories, items} = this.state
@@ -145,7 +160,8 @@ class Report extends Component {
             </li>
           </ul>
           <div className={'total'}>
-            <span className={`${balance < 0 ? 'deficit' : 'profit'} ${isEmpty ? '' : 'empty'}`}>
+            <span className={`${balance < 0 ? 'deficit' : 'profit'} ${isEmpty ? '' : 'empty'}`}
+                  onClick={() => this.notice(balance)}>
               {`共计: ${(isEmpty ? toThousandFilter(balance) : '')}`}
             </span>
           </div>

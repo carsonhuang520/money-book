@@ -19,8 +19,9 @@ class EmptyData extends Component {
         </span>
         }
       >
-        <Button type="primary" onClick={() => this.props.history.push('/')}
-                style={{backgroundColor: '#61dafb', borderColor: '#61dafb'}}>记一笔</Button>
+        <Button type="primary" onClick={() => this.props.history.push('/')}>
+          记一笔
+        </Button>
       </Empty>
     )
   }

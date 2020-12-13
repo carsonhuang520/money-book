@@ -2,7 +2,10 @@ import React from 'react'
 import {DatePicker} from 'antd'
 import locale from 'antd/es/date-picker/locale/zh_CN'
 import './Calendar.scss'
+import 'moment/locale/zh-cn'
 import moment from 'moment'
+
+moment.locale('zh-cn')
 
 const dateFormat = 'YYYY-MM'
 

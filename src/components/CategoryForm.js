@@ -65,7 +65,7 @@ class CategoryForm extends Component {
           </li>
         </ul>
         <div className={'button-wrapper'}>
-          <Button shape="round" className={'btn-create'} onClick={this.onCreateCategory}>确定</Button>
+          <Button shape="round" className={'btn-create'} type={'primary'} onClick={this.onCreateCategory}>确定</Button>
         </div>
       </div>
     )
