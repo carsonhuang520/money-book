@@ -27,7 +27,7 @@ class CategoryList extends Component {
                   <Icon name={item.iconName}/>
                   <span>{item.name}</span>
                 </span>
-                <span onClick={() => confirm('确定要删除该标签吗？', () => onDeleteCategory(item))}>
+                <span onClick={() => confirm(`删除后，"${item.name}"分类下的内容将归类为"其他"分类`, () => onDeleteCategory(item))}>
                   <Icon name={'delete'}/>
                 </span>
               </li>)

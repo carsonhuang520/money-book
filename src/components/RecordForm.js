@@ -15,7 +15,7 @@ class RecordForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      date: getYearAndMonth('date'),
+      date: moment(new Date()),
       name: '',
       money: '0',
       category: {}
@@ -49,7 +49,7 @@ class RecordForm extends Component {
   }
   onDateChange = (date, dateString) => {
     this.setState({
-      date: dateString
+      date: date
     })
   }
 

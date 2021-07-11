@@ -56,34 +56,39 @@ class PriceItem extends Component {
   }
 
   render() {
-    const {time, list, categories, onDeleteItem} = this.props
+    const {time, list, onDeleteItem} = this.props
     const {isClick, current} = this.state
-    const categoriesFlattern = flatternCategory(categories)
-    const total = getTotal(list, categoriesFlattern)
+    const total = list.reduce((prev, item) => {
+      if (item.type === 'outcome') {
+        prev -= item.price
+      } else {
+        prev += item.price
+      }
+      return prev
+    }, 0)
     return (
       <div className={'priceItem-wrapper'}>
         <h3 className={'priceItem-header'}>
           <span className={'priceItem-header-time'}>{time}</span>
-          <span
-            className={`priceItem-header-price ${total > 0 ? 'profit' : 'deficit'}`}>
-          {total > 0 ? '+' + toThousandFilter(total) : toThousandFilter(total)}
-        </span>
+          <span className={`priceItem-header-price ${total > 0 ? 'profit' : 'deficit'}`}>
+            {total > 0 ? '+' + toThousandFilter(total) : toThousandFilter(total)}
+          </span>
         </h3>
         <ul className={'priceItem-list'}>
           {
             list.map((item, index) => {
               return (
-                <li key={item.id} className={`priceItem-item ${isClick && current === index ? 'active' : ''}`}
+                <li key={item.accountId} className={`priceItem-item ${isClick && current === index ? 'active' : ''}`}
                     onTouchStart={(e) => this.onTouchStart(e)}
                     onTouchEnd={(e) => this.onTouchEnd(e, index)}
                     onClick={(e) => this.onLiClick(e)}>
                   <div className={`priceItem-item-content`}>
                     <span>
-                      <Icon name={categoriesFlattern[item.cid].iconName}/>
-                      <span>{item.name}</span>
+                      <Icon name={item.iconName}/>
+                      <span>{item.categoryName}</span>
                     </span>
                     <span>
-                      {(categoriesFlattern[item.cid].type === 'outcome' ? '-' : '+') + toThousandFilter(item.price)}
+                      {(item.type === 'outcome' ? '-' : '+') + toThousandFilter(item.price)}
                     </span>
                   </div>
                   <div className={`priceItem-item-del`}

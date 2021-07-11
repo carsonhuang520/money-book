@@ -12,7 +12,8 @@ class CreateCategory extends Component {
     super(props)
     this.state = {
       categories: [],
-      isLoading: false
+      isLoading: false,
+      type: 'outcome'
     }
   }
 
@@ -21,60 +22,72 @@ class CreateCategory extends Component {
   }
 
   initData = () => {
+    this.getIcons()
+  }
+
+  getIcons = () => {
     this.setState({
       isLoading: true
     })
-    const newCategory = getNewCategory()
-    this.setState({
-      categories: newCategory,
-      isLoading: false
+    axios.get('http://localhost:8000/icons').then(res => {
+      const {data} = res.data
+      this.setState({
+        categories: data,
+        isLoading: false
+      })
+    }).catch(err => {
+      console.log(err)
+      this.setState({
+        isLoading: false
+      })
     })
-    // axios.get('/newCategory').then(res => {
-    //   this.setState({
-    //     categories: res.data,
-    //     isLoading: false
-    //   })
-    // }).catch(error => {
-    //   this.setState({
-    //     isLoading: false
-    //   })
-    //   console.log(error)
-    // })
   }
 
   onCreateCategory = ({name, current}) => {
+    this.setState({
+      isLoading: true
+    })
     const newItem = this.getNewItem({name, current})
-    const categories = getCategories()
-    categories.push(newItem)
-    setCategories(categories)
-    success('添加成功!')
-    this.props.history.push('/editCategory')
-    // axios.post('/categories', newItem).then(() => {
-    //   success('添加成功!')
-    //   this.props.history.push('/editCategory')
-    // }).catch(error => {
-    //   console.log(error)
-    // })
+    axios.post('http://localhost:8000/category', newItem).then((res) => {
+      const {code, message} = res.data
+      if(code === 0) {
+        success('添加成功!')
+        this.props.history.push('/editCategory')
+      } else {
+        success(message)
+      }
+      this.setState({
+        isLoading: false
+      })
+    }).catch(error => {
+      console.log(error)
+      this.setState({
+        isLoading: false
+      })
+    })
   }
 
   getNewItem = ({name, current}) => {
-    const {type} = this.props
-    const id = ID()
+    const {type} = this.state
     const newItem = {
       name,
-      id,
       type,
-      iconName: current.name
+      iconName: current.iconName
     }
     return newItem
   }
 
+  onClickType = (type) => {
+    this.setState({
+      type
+    })
+  }
+
   render() {
-    const {isLoading, categories} = this.state
-    const {type, onClickType} = this.props
+    const {isLoading, type, categories} = this.state
     return (
       <Fragment>
-        <Header type={type} onClickType={onClickType}/>
+        <Header type={type} onClickType={this.onClickType}/>
         <main className={'main-wrapper'}>
           {
             isLoading

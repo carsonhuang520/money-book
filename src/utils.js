@@ -1,5 +1,6 @@
 import {message, Modal} from 'antd'
 import {QuestionCircleOutlined} from '@ant-design/icons'
+import Cookies from 'js-cookie'
 
 export const toThousandFilter = (num) => {
   return (+num || 0)
@@ -78,4 +79,13 @@ export const getTotal = (list, categoriesFlattern) => {
     prev = prev + (categoriesFlattern[cur.cid].type === 'outcome' ? -1 * cur.price : cur.price)
     return prev
   }, 0)
+}
+
+const TOKEN_KEY = 'token_key'
+export const setToken = (token) => {
+  Cookies.set(TOKEN_KEY, token)
+}
+
+export const getToken = () => {
+  return Cookies.get(TOKEN_KEY) || ''
 }

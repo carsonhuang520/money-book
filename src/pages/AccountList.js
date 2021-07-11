@@ -25,56 +25,33 @@ class AccountList extends Component {
   }
 
   initListData = (e) => {
-    this.setState({
-      isLoading: true
-    })
-    const items = getItems().filter(item => item.monthCategory.indexOf(e) >= 0)
-      .sort((a, b) => b.timestamp - a.timestamp)
-    const categories = getCategories()
-    this.setState({
-      isLoading: false,
-      categories: categories,
-      items: items,
-    })
-    // const url = `/items?monthCategory=${e}&_sort=timestamp&_order=desc`
-    // const promises = [axios.get('/categories'), axios.get(url)]
-    // Promise.all(promises).then(res => {
-    //   const [categories, items] = res
-    //   this.setState({
-    //     isLoading: false,
-    //     categories: categories.data,
-    //     items: items.data,
-    //   })
-    // }).catch(error => {
-    //   console.log(error)
-    // })
+    this.getAccountsByDate(this.state.dateString)
   }
 
   onChangeDate = (date) => {
     this.setState({
       dateString: date
     })
-    this.getListByDate(date)
+    this.getAccountsByDate(date)
   }
 
-  getListByDate = (date) => {
+  getAccountsByDate = (date) => {
     this.setState({
-      isLoading: true
+      isLoading: true,
     })
-    const items = getItems().filter(item => item.monthCategory.indexOf(date) >= 0)
-      .sort((a, b) => b.timestamp - a.timestamp)
-    this.setState({
-      isLoading: false,
-      items: items,
+    axios.get(`http://localhost:8000/accounts?date=${date}`).then(res => {
+      console.log(res.data)
+      const {data} = res.data
+      this.setState({
+        items: data,
+        isLoading: false
+      })
+    }).catch(err => {
+      console.log(err)
+      this.setState({
+        isLoading: true,
+      })
     })
-    // axios.get(`/items?monthCategory=${date}&_sort=timestamp&_order=desc`).then(res => {
-    //   this.setState({
-    //     items: res.data,
-    //     isLoading: false
-    //   })
-    // }).catch(err => {
-    //   console.log(err)
-    // })
   }
 
   onDeleteItem(delItem) {
@@ -92,7 +69,7 @@ class AccountList extends Component {
   }
 
   render() {
-    const {dateString, categories, items, isLoading} = this.state
+    const {dateString, items, isLoading} = this.state
     return (
       <Fragment>
         <header className={'header-wrapper'}>明细</header>
@@ -102,8 +79,7 @@ class AccountList extends Component {
             isLoading
               ? <Loading/>
               : (items.length ?
-              <PriceList categories={categories} items={items}
-                         onDeleteItem={(item) => this.onDeleteItem(item)}
+              <PriceList items={items} onDeleteItem={(item) => this.onDeleteItem(item)}
               /> :
               <EmptyData/>)
           }

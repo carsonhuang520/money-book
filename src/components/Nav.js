@@ -4,16 +4,20 @@ import {withRouter} from 'react-router-dom'
 import Icon from './Icon'
 
 class Nav extends Component {
-  onClickNav = (e, type) => {
+  onClickNav = (e, newType) => {
+    const {type} = this.props
     e.preventDefault()
-    if (type === 'jizhang') {
+    if (type === newType) {
+      return
+    }
+    if (newType === 'jizhang') {
       this.props.history.push('/')
-    } else if (type === 'detail') {
+    } else if (newType === 'detail') {
       this.props.history.push('/list')
     } else {
       this.props.history.push('/report')
     }
-    this.props.onClickNav(type)
+    this.props.onClickNav(newType)
   }
 
   render() {
@@ -31,7 +35,7 @@ class Nav extends Component {
         <a className={`${type === 'report' ? 'active' : ''}`} href={'/'}
            onClick={(e) => this.onClickNav(e, 'report')}>
           <Icon name={'baogao'}/>
-          <span>报告</span></a>
+          <span>统计</span></a>
       </nav>
     )
   }

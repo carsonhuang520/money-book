@@ -1,15 +1,15 @@
 import React, {Component, Fragment} from 'react'
 import Header from '../components/Header'
 import RecordForm from '../components/RecordForm'
-import withContext from '../withContext'
-import {ID, success} from '../utils'
+import {withRouter} from 'react-router-dom'
+import {getToken, success} from '../utils'
 import axios from 'axios'
-import {getCategories, getItems, setItems} from '../localStorage'
 
 class CreateAccount extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      type: 'outcome',
       categories: [],
       isLoading: false,
       isBtnLoading: false
@@ -21,22 +21,31 @@ class CreateAccount extends Component {
   }
 
   initData = () => {
+    this.getCategories(this.state.type)
+  }
+
+  getCategories = (type) => {
     this.setState({
       isLoading: true
     })
-    const categories = getCategories()
-    this.setState({
-      categories: categories,
-      isLoading: false
+    const token = getToken()
+    if(!token) {
+      this.props.history.push('/login')
+      return
+    }
+    axios.get(`http://localhost:8000/category?type=${type}`, {
+      headers: {
+        'token': getToken()
+      }
+    }).then(res => {
+      const {data} = res.data
+      this.setState({
+        categories: data,
+        isLoading: false
+      })
+    }).catch(error => {
+      console.log(error)
     })
-    // axios.get('/categories').then(res => {
-    //   this.setState({
-    //     categories: res.data,
-    //     isLoading: false
-    //   })
-    // }).catch(error => {
-    //   console.log(error)
-    // })
   }
 
   createItem = (item, category) => {
@@ -44,46 +53,49 @@ class CreateAccount extends Component {
       isBtnLoading: true
     })
     const newItem = this.getNewItem(item, category)
-    const items = getItems()
-    const newItems = JSON.parse(JSON.stringify(items))
-    newItems.push(newItem)
-    setItems(newItems)
-    this.setState({
-      isBtnLoading: false
+    console.log(newItem)
+    axios.post(`http://localhost:8000/accounts`, newItem).then((res) => {
+      if (res.data.code === 0) {
+        this.setState({
+          isBtnLoading: false
+        })
+        success('已保存')
+      }
+    }).catch(err => {
+      this.setState({
+        isBtnLoading: false
+      })
     })
-    success('已保存')
-    // axios.post(`/items`, newItem).then(() => {
-    //   this.setState({
-    //     isBtnLoading: false
-    //   })
-    //   success('已保存')
-    // })
   }
 
   getNewItem = (item, category) => {
-    const newId = ID()
     const {date, name, money} = item
-    const monthCategory = date.substring(0, date.lastIndexOf('-'))
-    const timestamp = new Date(date).getTime()
+    let newDate = date.isBefore(new Date(), 'day')
+      ? date.format(`YYYY/MM/DD`) + ' 23:59'
+      : date.format('YYYY/MM/DD HH:mm')
     const newItem = {
-      name,
-      date,
+      description: name,
+      date: newDate,
       price: parseInt(money),
-      id: newId,
-      timestamp,
-      monthCategory,
-      cid: category.id
+      categoryId: category.id
     }
     return newItem
   }
 
+  onClickType = (type) => {
+    this.setState({
+      type
+    })
+    this.getCategories(type)
+  }
+
   render() {
-    const {type, onClickType} = this.props
-    const {categories, isLoading, isBtnLoading} = this.state
+    // const {type, onClickType} = this.props
+    const {categories, isLoading, isBtnLoading, type} = this.state
     const categoriesFilter = categories.filter(item => item.type === type)
     return (
       <Fragment>
-        <Header type={type} onClickType={onClickType}/>
+        <Header type={type} onClickType={this.onClickType}/>
         <main className={'main-wrapper'}>
           <RecordForm createItem={this.createItem}
                       categories={categoriesFilter}
@@ -97,4 +109,4 @@ class CreateAccount extends Component {
   }
 }
 
-export default withContext(CreateAccount)
+export default withRouter(CreateAccount)

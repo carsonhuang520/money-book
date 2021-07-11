@@ -12,7 +12,7 @@ function IconList(props) {
             return (
               <li key={item.id} className={'category-item'} onClick={() => onClickItem(item)}>
                 <div className={`category-item-content newIcon ${item.id === current.id ? 'active' : ''}`}>
-                  <Icon name={item.name}/>
+                  <Icon name={item.iconName}/>
                 </div>
               </li>)
           })

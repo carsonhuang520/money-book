@@ -12,6 +12,7 @@ class EditCategory extends Component {
     this.state = {
       categories: [],
       isLoading: false,
+      type: 'outcome'
     }
   }
 
@@ -20,57 +21,66 @@ class EditCategory extends Component {
   }
 
   initData = () => {
+    this.getCategoriesByType(this.state.type)
+  }
+
+  getCategoriesByType = (type) => {
     this.setState({
       isLoading: true
     })
-    const categories = getCategories()
-    this.setState({
-      categories: categories,
-      isLoading: false
+    axios.get(`http://localhost:8000/category?type=${type}`).then(res => {
+      const {data} = res.data
+      this.setState({
+        categories: data,
+        isLoading: false
+      })
+    }).catch(error => {
+      console.log(error)
+      this.setState({
+        isLoading: false
+      })
     })
-    // axios.get('/categories').then(res => {
-    //   this.setState({
-    //     categories: res.data,
-    //     isLoading: false
-    //   })
-    // }).catch(error => {
-    //   console.log(error)
-    // })
   }
 
   onDeleteCategory = (item) => {
     this.setState({
       isLoading: true
     })
-    const newCategories = this.state.categories.filter(e => e.id !== item.id)
-    setCategories(newCategories)
-    success('删除成功!')
-    this.setState({
-      categories: newCategories,
-      isLoading: false,
+    axios.delete(`http://localhost:8000/category/${item.id}?type=${this.state.type}`).then((res) => {
+      const {code} = res.data
+      if(code === 0) {
+        success('删除成功!')
+        this.setState({
+          isLoading: false,
+        })
+        this.getCategoriesByType(this.state.type)
+      } else {
+        success('删除失败!')
+        this.setState({
+          isLoading: false,
+        })
+      }
+    }).catch(error => {
+      this.setState({
+        isLoading: false
+      })
+      console.log(error)
     })
-    // axios.delete(`/categories/${item.id}`).then(() => {
-    //   const newCategories = this.state.categories.filter(e => e.id !== item.id)
-    //   success('删除成功!')
-    //   this.setState({
-    //     categories: newCategories,
-    //     isLoading: false,
-    //   })
-    // }).catch(error => {
-    //   this.setState({
-    //     isLoading: false
-    //   })
-    //   console.log(error)
-    // })
+  }
+
+  onClickType = (type) => {
+    this.setState({
+      type
+    })
+    this.getCategoriesByType(type)
   }
 
   render() {
-    const {type, onClickType} = this.props
-    const {categories, isLoading} = this.state
-    const categoriesFilter = categories.filter(item => item.type === type && item.name !== '编辑')
+    const {categories, isLoading, type} = this.state
+    const categoriesFilter = categories.filter(item => item.type === type && item.name !== '编辑' && item.name !== '其他')
     return (
       <Fragment>
-        <Header type={type} onClickType={onClickType}/>
+        <Header type={type} onClickType={this.onClickType}/>
         <main className={'main-wrapper'}>
           {
             isLoading
