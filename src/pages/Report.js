@@ -6,7 +6,7 @@ import Header from '../components/Header'
 import Calendar from '../components/Calendar'
 import PieChart from '../components/PieChart'
 import './Report.scss'
-import {getYearAndMonth, toThousandFilter} from '../utils'
+import {error, getYearAndMonth, toThousandFilter} from '../utils'
 import EmptyData from '../components/EmptyData'
 import Loading from '../components/Loading'
 import {getChartAccounts, getTotalAccounts} from '../api/account'
@@ -40,11 +40,18 @@ class Report extends Component {
       isLoading: true
     })
     getChartAccounts(date, type).then(res => {
-      console.log(res.data.data)
-      this.setState({
-        items: res.data.data,
-        isLoading: false
-      })
+      const {data, code, message} = res.data
+      if (code === 0) {
+        this.setState({
+          items: data,
+          isLoading: false
+        })
+      } else {
+        error(message)
+        this.setState({
+          isLoading: false
+        })
+      }
     }).catch(err => {
       console.log(err)
     })
@@ -106,7 +113,6 @@ class Report extends Component {
           }
         })
       }
-
     }).catch(err => {
       console.log(err)
     })

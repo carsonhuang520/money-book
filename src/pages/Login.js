@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom'
 
 import Icon from '../components/Icon'
 import './Login.scss'
-import {confirm, setToken, success} from '../utils'
+import {confirm, error, success} from '../utils'
 import {login} from '../api/user'
 import {setAuthToken} from '../localStorage'
 
@@ -38,7 +38,7 @@ class Login extends Component {
         setAuthToken(data.token)
         this.props.history.push('/')
       } else {
-        success(message)
+        error(message)
       }
       this.setState({
         isBtnLoading: false

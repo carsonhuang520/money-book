@@ -1,5 +1,6 @@
 import React, {Component, Fragment} from 'react'
 import {withRouter} from 'react-router-dom'
+
 import './Category.scss'
 import Icon from './Icon'
 import Loading from './Loading'

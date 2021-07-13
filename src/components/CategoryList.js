@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {withRouter} from 'react-router-dom'
+
 import './CategoryList.scss'
 import Icon from './Icon'
 import withContext from '../withContext'

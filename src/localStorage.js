@@ -491,3 +491,7 @@ export const setAuthToken = (token) => {
 export const getAuthToken = () => {
   return localStorage.getItem('Authorization')
 }
+
+export const deleteAuthToken = () => {
+  localStorage.removeItem('Authorization')
+}

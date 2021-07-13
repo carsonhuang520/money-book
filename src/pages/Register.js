@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom'
 
 import Icon from '../components/Icon'
 import './Login.scss'
-import {confirm, success, URL} from '../utils'
+import {confirm, error, success} from '../utils'
 import {register} from '../api/user'
 
 class Register extends Component {
@@ -36,7 +36,7 @@ class Register extends Component {
         success('注册成功')
         this.props.history.push('/login')
       } else {
-        success(message)
+        error(message)
       }
       this.setState({
         isBtnLoading: false

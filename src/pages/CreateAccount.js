@@ -3,7 +3,7 @@ import {withRouter} from 'react-router-dom'
 
 import Header from '../components/Header'
 import RecordForm from '../components/RecordForm'
-import {success} from '../utils'
+import {error, success} from '../utils'
 import {getCategoriesByType} from '../api/category'
 import {addAccount} from '../api/account'
 import Nav from '../components/Nav'
@@ -33,13 +33,23 @@ class CreateAccount extends Component {
       isLoading: true
     })
     getCategoriesByType(type).then(res => {
-      const {data} = res.data
-      this.setState({
-        categories: data,
-        isLoading: false
-      })
+      const {data, code, message} = res.data
+      if (code === 0) {
+        this.setState({
+          categories: data,
+          isLoading: false
+        })
+      } else {
+        error(message)
+        this.setState({
+          isLoading: false
+        })
+      }
     }).catch(error => {
       console.log(error)
+      this.setState({
+        isLoading: false
+      })
     })
   }
 
@@ -51,11 +61,13 @@ class CreateAccount extends Component {
     console.log(newItem)
     addAccount(newItem).then((res) => {
       if (res.data.code === 0) {
-        this.setState({
-          isBtnLoading: false
-        })
         success('已保存')
+      } else {
+        error(res.data.message)
       }
+      this.setState({
+        isBtnLoading: false
+      })
     }).catch(err => {
       this.setState({
         isBtnLoading: false

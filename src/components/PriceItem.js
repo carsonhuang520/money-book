@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
+
 import './PriceList.scss'
 import Icon from './Icon'
-import {confirm, flatternCategory, getTotal, toThousandFilter} from '../utils'
+import {confirm, toThousandFilter} from '../utils'
 
 class PriceItem extends Component {
   constructor(props) {

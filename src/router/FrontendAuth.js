@@ -3,6 +3,7 @@ import {Route, Redirect} from 'react-router-dom'
 
 import RouterConfig from './config'
 import {getAuthToken} from '../localStorage'
+import {error} from '../utils'
 
 class FrontendAuth extends Component {
   render() {
@@ -12,7 +13,7 @@ class FrontendAuth extends Component {
 
     if (!authToken) {
       if (targetRouter.auth) {
-        console.log('请先登录')
+        error('请先登录')
         return <Redirect to={'/login'}/>
       } else {
         return <Route exact path={targetRouter.path} component={targetRouter.component}/>

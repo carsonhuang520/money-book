@@ -1,6 +1,6 @@
 import React from 'react'
+
 import PriceItem from './PriceItem'
-import {flatternItems} from '../utils'
 
 function PriceList(props) {
   const {items, onDeleteItem} = props

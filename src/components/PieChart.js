@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import echarts from 'echarts'
+
 import withContext from '../withContext'
 
 class PieChart extends Component {

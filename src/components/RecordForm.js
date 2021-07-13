@@ -1,10 +1,11 @@
 import React, {Fragment, Component} from 'react'
 import {Input, DatePicker, Button} from 'antd'
 import locale from 'antd/es/date-picker/locale/zh_CN'
-import Category from './Category'
 import moment from 'moment'
+
+import Category from './Category'
 import './RecordForm.scss'
-import {getYearAndMonth, toThousandFilter, confirm} from '../utils'
+import {toThousandFilter, confirm} from '../utils'
 import 'moment/locale/zh-cn'
 
 moment.locale('zh-cn')

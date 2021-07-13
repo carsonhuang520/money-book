@@ -38,6 +38,13 @@ export const success = (title) => {
   message.success(title)
 }
 
+export const error = (title) => {
+  Modal.error({
+    content: title,
+    centered: true,
+  })
+}
+
 export const ID = () => {
   // Math.random should be unique because of its seeding algorithm.
   // Convert it to base 36 (numbers + letters), and grab the first 9 characters

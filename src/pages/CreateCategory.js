@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom'
 import Header from '../components/Header'
 import CategoryForm from '../components/CategoryForm'
 import Loading from '../components/Loading'
-import {success} from '../utils'
+import {error, success} from '../utils'
 import {addCategory, getNewIcons} from '../api/category'
 import Nav from '../components/Nav'
 import withContext from '../withContext'
@@ -32,11 +32,18 @@ class CreateCategory extends Component {
       isLoading: true
     })
     getNewIcons().then(res => {
-      const {data} = res.data
-      this.setState({
-        categories: data,
-        isLoading: false
-      })
+      const {data, code, message} = res.data
+      if (code === 0) {
+        this.setState({
+          categories: data,
+          isLoading: false
+        })
+      } else {
+        error(message)
+        this.setState({
+          isLoading: false
+        })
+      }
     }).catch(err => {
       console.log(err)
       this.setState({
@@ -56,7 +63,7 @@ class CreateCategory extends Component {
         success('添加成功!')
         this.props.history.push('/editCategory')
       } else {
-        success(message)
+        error(message)
       }
       this.setState({
         isLoading: false

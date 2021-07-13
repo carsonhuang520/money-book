@@ -3,7 +3,7 @@ import React, {Component, Fragment} from 'react'
 import Header from '../components/Header'
 import CategoryList from '../components/CategoryList'
 import Loading from '../components/Loading'
-import {success} from '../utils'
+import {error, success} from '../utils'
 import {deleteCategory, getCategoriesByType} from '../api/category'
 import Nav from '../components/Nav'
 import withContext from '../withContext'
@@ -31,11 +31,18 @@ class EditCategory extends Component {
       isLoading: true
     })
     getCategoriesByType(type).then(res => {
-      const {data} = res.data
-      this.setState({
-        categories: data,
-        isLoading: false
-      })
+      const {data, code, message} = res.data
+      if (code === 0) {
+        this.setState({
+          categories: data,
+          isLoading: false
+        })
+      } else {
+        error(message)
+        this.setState({
+          isLoading: false
+        })
+      }
     }).catch(error => {
       console.log(error)
       this.setState({
@@ -57,7 +64,7 @@ class EditCategory extends Component {
         })
         this.getCategoriesByType(this.state.type)
       } else {
-        success('删除失败!')
+        error('删除失败!')
         this.setState({
           isLoading: false,
         })

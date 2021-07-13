@@ -3,7 +3,7 @@ import React, {Component, Fragment} from 'react'
 import PriceList from '../components/PriceList'
 import Calendar from '../components/Calendar'
 import withContext from '../withContext'
-import {getYearAndMonth, success} from '../utils'
+import {error, getYearAndMonth, success} from '../utils'
 import EmptyData from '../components/EmptyData'
 import Loading from '../components/Loading'
 import {deleteAccount, getAccountList} from '../api/account'
@@ -41,16 +41,22 @@ class AccountList extends Component {
       isLoading: true,
     })
     getAccountList(date).then(res => {
-      console.log(res.data)
-      const {data} = res.data
-      this.setState({
-        items: data,
-        isLoading: false
-      })
+      const {data, code, message} = res.data
+      if (code === 0) {
+        this.setState({
+          items: data,
+          isLoading: false
+        })
+      } else {
+        error(message)
+        this.setState({
+          isLoading: false
+        })
+      }
     }).catch(err => {
       console.log(err)
       this.setState({
-        isLoading: true,
+        isLoading: false,
       })
     })
   }
@@ -60,13 +66,17 @@ class AccountList extends Component {
       isLoading: true
     })
     deleteAccount(delItem.accountId).then(res => {
-      success('删除成功!')
+      const {code, message} = res.data
       this.setState({
         isLoading: false,
       })
-      this.getAccountsByDate(this.state.dateString)
+      if (code === 0) {
+        success('删除成功!')
+        this.getAccountsByDate(this.state.dateString)
+      } else {
+        error(message)
+      }
     }).catch(err => {
-      success('删除失败!')
       this.setState({
         isLoading: false,
       })
