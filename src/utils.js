@@ -2,6 +2,10 @@ import {message, Modal} from 'antd'
 import {QuestionCircleOutlined} from '@ant-design/icons'
 import Cookies from 'js-cookie'
 
+const HOST = 'localhost'
+const PORT = 8000
+export const URL = `http://${HOST}:${PORT}`
+
 export const toThousandFilter = (num) => {
   return (+num || 0)
     .toString()

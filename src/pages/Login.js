@@ -1,11 +1,12 @@
-import React, {Component, Fragment} from 'react'
+import React, {Component} from 'react'
 import {Button, Input} from 'antd'
-import axios from 'axios'
 import {withRouter} from 'react-router-dom'
 
 import Icon from '../components/Icon'
 import './Login.scss'
 import {confirm, setToken, success} from '../utils'
+import {login} from '../api/user'
+import {setAuthToken} from '../localStorage'
 
 class Login extends Component {
   constructor(props) {
@@ -30,14 +31,11 @@ class Login extends Component {
     this.setState({
       isBtnLoading: true
     })
-    axios.post('http://localhost:8000/user/login', {
-      username,
-      password
-    }).then(res => {
+    login({username, password}).then(res => {
       const {code, data, message} = res.data
       if (code === 0) {
         success('登录成功')
-        setToken(data.token)
+        setAuthToken(data.token)
         this.props.history.push('/')
       } else {
         success(message)

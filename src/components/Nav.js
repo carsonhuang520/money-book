@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
-import './Nav.scss'
 import {withRouter} from 'react-router-dom'
+
+import './Nav.scss'
 import Icon from './Icon'
 
 class Nav extends Component {

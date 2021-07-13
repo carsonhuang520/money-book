@@ -1,11 +1,13 @@
 import React, {Component, Fragment} from 'react'
+import {withRouter} from 'react-router-dom'
+
 import Header from '../components/Header'
 import CategoryForm from '../components/CategoryForm'
-import axios from 'axios'
 import Loading from '../components/Loading'
-import {ID, success} from '../utils'
-import {withRouter} from 'react-router-dom'
-import {getCategories, getNewCategory, setCategories} from '../localStorage'
+import {success} from '../utils'
+import {addCategory, getNewIcons} from '../api/category'
+import Nav from '../components/Nav'
+import withContext from '../withContext'
 
 class CreateCategory extends Component {
   constructor(props) {
@@ -29,7 +31,7 @@ class CreateCategory extends Component {
     this.setState({
       isLoading: true
     })
-    axios.get('http://localhost:8000/icons').then(res => {
+    getNewIcons().then(res => {
       const {data} = res.data
       this.setState({
         categories: data,
@@ -48,9 +50,9 @@ class CreateCategory extends Component {
       isLoading: true
     })
     const newItem = this.getNewItem({name, current})
-    axios.post('http://localhost:8000/category', newItem).then((res) => {
+    addCategory(newItem).then((res) => {
       const {code, message} = res.data
-      if(code === 0) {
+      if (code === 0) {
         success('添加成功!')
         this.props.history.push('/editCategory')
       } else {
@@ -84,6 +86,8 @@ class CreateCategory extends Component {
   }
 
   render() {
+    const {navType} = this.props.data
+    const {onClickNav} = this.props.actions
     const {isLoading, type, categories} = this.state
     return (
       <Fragment>
@@ -97,9 +101,10 @@ class CreateCategory extends Component {
               />
           }
         </main>
+        <Nav type={navType} onClickNav={() => onClickNav()}/>
       </Fragment>
     )
   }
 }
 
-export default withRouter(CreateCategory)
+export default withRouter(withContext(CreateCategory))

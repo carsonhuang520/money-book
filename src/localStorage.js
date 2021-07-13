@@ -483,3 +483,11 @@ export const getCategories = () => {
 export const getNewCategory = () => {
   return JSON.parse(localStorage.getItem('newCategory'))
 }
+
+export const setAuthToken = (token) => {
+  localStorage.setItem('Authorization', token)
+}
+
+export const getAuthToken = () => {
+  return localStorage.getItem('Authorization')
+}

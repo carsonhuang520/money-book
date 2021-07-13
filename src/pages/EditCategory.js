@@ -1,10 +1,12 @@
 import React, {Component, Fragment} from 'react'
+
 import Header from '../components/Header'
 import CategoryList from '../components/CategoryList'
-import axios from 'axios'
 import Loading from '../components/Loading'
 import {success} from '../utils'
-import {getCategories, setCategories} from '../localStorage'
+import {deleteCategory, getCategoriesByType} from '../api/category'
+import Nav from '../components/Nav'
+import withContext from '../withContext'
 
 class EditCategory extends Component {
   constructor(props) {
@@ -28,7 +30,7 @@ class EditCategory extends Component {
     this.setState({
       isLoading: true
     })
-    axios.get(`http://localhost:8000/category?type=${type}`).then(res => {
+    getCategoriesByType(type).then(res => {
       const {data} = res.data
       this.setState({
         categories: data,
@@ -46,9 +48,9 @@ class EditCategory extends Component {
     this.setState({
       isLoading: true
     })
-    axios.delete(`http://localhost:8000/category/${item.id}?type=${this.state.type}`).then((res) => {
+    deleteCategory(item.id, this.state.type).then((res) => {
       const {code} = res.data
-      if(code === 0) {
+      if (code === 0) {
         success('删除成功!')
         this.setState({
           isLoading: false,
@@ -76,6 +78,8 @@ class EditCategory extends Component {
   }
 
   render() {
+    const {navType} = this.props.data
+    const {onClickNav} = this.props.actions
     const {categories, isLoading, type} = this.state
     const categoriesFilter = categories.filter(item => item.type === type && item.name !== '编辑' && item.name !== '其他')
     return (
@@ -88,9 +92,10 @@ class EditCategory extends Component {
               : <CategoryList type={type} categories={categoriesFilter} onDeleteCategory={this.onDeleteCategory}/>
           }
         </main>
+        <Nav type={navType} onClickNav={() => onClickNav()}/>
       </Fragment>
     )
   }
 }
 
-export default EditCategory
+export default withContext(EditCategory)

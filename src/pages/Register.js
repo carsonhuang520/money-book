@@ -1,11 +1,11 @@
-import React, {Component, Fragment} from 'react'
+import React, {Component} from 'react'
 import {Button, Input} from 'antd'
-import axios from 'axios'
 import {withRouter} from 'react-router-dom'
 
 import Icon from '../components/Icon'
 import './Login.scss'
-import {confirm, success} from '../utils'
+import {confirm, success, URL} from '../utils'
+import {register} from '../api/user'
 
 class Register extends Component {
   constructor(props) {
@@ -30,11 +30,8 @@ class Register extends Component {
     this.setState({
       isBtnLoading: true
     })
-    axios.post('http://localhost:8000/user/register', {
-      username,
-      password
-    }).then(res => {
-      const {code, data, message} = res.data
+    register({username, password}).then(res => {
+      const {code, message} = res.data
       if (code === 0) {
         success('注册成功')
         this.props.history.push('/login')

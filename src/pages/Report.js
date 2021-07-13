@@ -1,15 +1,17 @@
 import React, {Fragment, Component} from 'react'
+import {Modal} from 'antd'
+import {withRouter} from 'react-router-dom'
+
 import Header from '../components/Header'
 import Calendar from '../components/Calendar'
 import PieChart from '../components/PieChart'
 import './Report.scss'
-import {withRouter} from 'react-router-dom'
-import {flatternCategory, flatternItemsByType, getYearAndMonth, toThousandFilter} from '../utils'
-import axios from 'axios'
+import {getYearAndMonth, toThousandFilter} from '../utils'
 import EmptyData from '../components/EmptyData'
 import Loading from '../components/Loading'
-import {getCategories, getItems} from '../localStorage'
-import {Modal} from 'antd'
+import {getChartAccounts, getTotalAccounts} from '../api/account'
+import Nav from '../components/Nav'
+import withContext from '../withContext'
 
 class Report extends Component {
   constructor(props) {
@@ -37,7 +39,7 @@ class Report extends Component {
     this.setState({
       isLoading: true
     })
-    axios.get(`http://localhost:8000/accounts/charts?date=${date}&type=${type}`).then(res => {
+    getChartAccounts(date, type).then(res => {
       console.log(res.data.data)
       this.setState({
         items: res.data.data,
@@ -70,7 +72,7 @@ class Report extends Component {
   }
 
   getTotalByMonth = (date) => {
-    axios.get(`http://localhost:8000/accounts/total?date=${date}`).then(res => {
+    getTotalAccounts(date).then(res => {
       const {data} = res.data
       if (data.length === 0) {
         this.setState({
@@ -157,6 +159,8 @@ class Report extends Component {
   }
 
   render() {
+    const {navType} = this.props.data
+    const {onClickNav} = this.props.actions
     const {dateString, isLoading, type, items, totalIncome, totalOutcome} = this.state
     const chartData = this.handleChartData(items, type)
     const balance = totalIncome - totalOutcome
@@ -186,9 +190,10 @@ class Report extends Component {
               : (isEmpty ? <PieChart type={type} chartData={chartData}/> : <EmptyData/>)
           }
         </main>
+        <Nav type={navType} onClickNav={() => onClickNav()}/>
       </Fragment>
     )
   }
 }
 
-export default withRouter(Report)
+export default withRouter(withContext(Report))

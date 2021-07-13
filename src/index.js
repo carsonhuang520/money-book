@@ -5,12 +5,9 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import './iconfont'
 import 'antd/dist/antd.less'
-import {BrowserRouter, HashRouter} from 'react-router-dom'
 
 ReactDOM.render(
-  <HashRouter>
-    <App/>
-  </HashRouter>,
+  <App/>,
   document.getElementById('root')
 )
 

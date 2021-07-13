@@ -1,12 +1,13 @@
 import React, {Component, Fragment} from 'react'
+
 import PriceList from '../components/PriceList'
 import Calendar from '../components/Calendar'
 import withContext from '../withContext'
 import {getYearAndMonth, success} from '../utils'
-import axios from 'axios'
 import EmptyData from '../components/EmptyData'
 import Loading from '../components/Loading'
-import {getCategories, getItems, setItems} from '../localStorage'
+import {deleteAccount, getAccountList} from '../api/account'
+import Nav from '../components/Nav'
 
 class AccountList extends Component {
   constructor(props) {
@@ -24,7 +25,7 @@ class AccountList extends Component {
     this.initListData(dateString)
   }
 
-  initListData = (e) => {
+  initListData = () => {
     this.getAccountsByDate(this.state.dateString)
   }
 
@@ -39,7 +40,7 @@ class AccountList extends Component {
     this.setState({
       isLoading: true,
     })
-    axios.get(`http://localhost:8000/accounts?date=${date}`).then(res => {
+    getAccountList(date).then(res => {
       console.log(res.data)
       const {data} = res.data
       this.setState({
@@ -58,17 +59,23 @@ class AccountList extends Component {
     this.setState({
       isLoading: true
     })
-    const {items} = this.state
-    const newItems = items.filter(item => item.id !== delItem.id)
-    setItems(newItems)
-    success('删除成功!')
-    this.setState({
-      isLoading: false,
-      items: newItems,
+    deleteAccount(delItem.accountId).then(res => {
+      success('删除成功!')
+      this.setState({
+        isLoading: false,
+      })
+      this.getAccountsByDate(this.state.dateString)
+    }).catch(err => {
+      success('删除失败!')
+      this.setState({
+        isLoading: false,
+      })
     })
   }
 
   render() {
+    const {navType} = this.props.data
+    const {onClickNav} = this.props.actions
     const {dateString, items, isLoading} = this.state
     return (
       <Fragment>
@@ -84,6 +91,7 @@ class AccountList extends Component {
               <EmptyData/>)
           }
         </main>
+        <Nav type={navType} onClickNav={() => onClickNav()}/>
       </Fragment>
     )
   }

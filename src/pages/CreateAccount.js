@@ -1,9 +1,13 @@
 import React, {Component, Fragment} from 'react'
+import {withRouter} from 'react-router-dom'
+
 import Header from '../components/Header'
 import RecordForm from '../components/RecordForm'
-import {withRouter} from 'react-router-dom'
-import {getToken, success} from '../utils'
-import axios from 'axios'
+import {success} from '../utils'
+import {getCategoriesByType} from '../api/category'
+import {addAccount} from '../api/account'
+import Nav from '../components/Nav'
+import withContext from '../withContext'
 
 class CreateAccount extends Component {
   constructor(props) {
@@ -12,7 +16,7 @@ class CreateAccount extends Component {
       type: 'outcome',
       categories: [],
       isLoading: false,
-      isBtnLoading: false
+      isBtnLoading: false,
     }
   }
 
@@ -28,16 +32,7 @@ class CreateAccount extends Component {
     this.setState({
       isLoading: true
     })
-    const token = getToken()
-    if(!token) {
-      this.props.history.push('/login')
-      return
-    }
-    axios.get(`http://localhost:8000/category?type=${type}`, {
-      headers: {
-        'token': getToken()
-      }
-    }).then(res => {
+    getCategoriesByType(type).then(res => {
       const {data} = res.data
       this.setState({
         categories: data,
@@ -54,7 +49,7 @@ class CreateAccount extends Component {
     })
     const newItem = this.getNewItem(item, category)
     console.log(newItem)
-    axios.post(`http://localhost:8000/accounts`, newItem).then((res) => {
+    addAccount(newItem).then((res) => {
       if (res.data.code === 0) {
         this.setState({
           isBtnLoading: false
@@ -90,7 +85,8 @@ class CreateAccount extends Component {
   }
 
   render() {
-    // const {type, onClickType} = this.props
+    const {navType} = this.props.data
+    const {onClickNav} = this.props.actions
     const {categories, isLoading, isBtnLoading, type} = this.state
     const categoriesFilter = categories.filter(item => item.type === type)
     return (
@@ -104,9 +100,10 @@ class CreateAccount extends Component {
                       isBtnLoading={isBtnLoading}
           />
         </main>
+        <Nav type={navType} onClickNav={() => onClickNav()}/>
       </Fragment>
     )
   }
 }
 
-export default withRouter(CreateAccount)
+export default withRouter(withContext(CreateAccount))
